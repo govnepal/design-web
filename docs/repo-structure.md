@@ -11,9 +11,11 @@
 |---|---|---|---|
 | `design-guidelines` | Guidelines lead (gov) | Policy source of truth: content, tokens, rules, schemas | everything |
 | `design-web` | Web lead | Design system site + asset depot + tool UIs (monorepo) | — |
-| `design-tools` | Web lead | Checker engines: accessibility, design/token conformance, AI review — CLI + API | web, CI everywhere |
+| `design-ui` | Web lead | Published npm packages: `@nepal-gov/tokens`, `@nepal-gov/ui` — the UI kit every govt app installs | web, all govt apps, AI-generated code |
+| `design-tools` | Web lead | Checker engines: accessibility, design/token conformance, AI review — CLI + API + Action | web, CI everywhere, design-ai |
+| `design-ai` | Web lead | AI layer: MCP server, Claude Skill, AGENTS.md init, llms.txt generators | AI coding tools (Claude, Codex, Cursor…) |
 | `design-icons` | Illustration lead | Official icon set (SVG + metadata) | web, figma |
-| `design-assets` | Illustration lead | Catalog + small assets in git; large binaries in object storage (see §5) | depot |
+| `design-assets` | Illustration lead | Catalog + small assets in git; large binaries in object storage (see §7) | depot |
 | `design-fonts` | Fonts lead | Font packages, Devanagari subsetting, fallback stacks | web, figma |
 | `design-figma` | Figma lead | Token sync config, naming maps, library changelog | — |
 | `.github` | Shared | Org-wide templates, contribution process, org README | all |
@@ -307,17 +309,40 @@ One-time, scriptable: split the existing v0.1 HTML into the 20 content files, ex
 
 ---
 
-## 2. `design-web`
+## 2. `design-ui`
 
-Owner: web lead. Monorepo for all user-facing apps — they share tokens, UI kit, and the government shell.
+Owner: web lead. The published packages every government web app installs — **the UI kit is the real product**; the website documents it. Separate from `design-web` so departments, vendors, and AI-generated code depend on packages, never on website internals — and `design-web` consumes them exactly like any ministry app would (dogfooding).
+
+```
+design-ui/
+├── packages/
+│   ├── tokens/                  # @nepal-gov/tokens — pulls design-guidelines@tag,
+│   │                            #   generates CSS variables per display mode
+│   │                            #   (light/dark/high-contrast/color-blind-safe/…)
+│   ├── css/                     # @nepal-gov/css — framework-agnostic stylesheet
+│   │                            #   (semantic HTML + classes; progressive enhancement)
+│   └── ui/                      # @nepal-gov/ui — Civic Calm component library
+│                                #   (mode-aware via CSS variable switching; every
+│                                #    component maps to its design-guidelines spec id)
+├── docs/                        # per-component developer notes (rendered by design-web)
+└── .github/workflows/
+    ├── ci.yml                   # design-tools checkers run on component fixtures;
+    │                            #   every component tested keyboard-only + per mode
+    └── release.yml              # publish to npm on tag; dispatch to design-web
+```
+
+Notes:
+- Framework choice (React first vs. web components) is an open decision below; `@nepal-gov/css` exists regardless so plain-HTML sites and CMSes can comply without a JS framework.
+- Component `id`s match `design-guidelines/components/` ids — the website links spec ↔ implementation, and `design-tools` can detect "hand-rolled almost-right component" vs. the real one.
+
+---
+
+## 3. `design-web`
+
+Owner: web lead. Monorepo for all user-facing apps — installs `@nepal-gov/tokens` + `@nepal-gov/ui` from `design-ui` like any other government app.
 
 ```
 design-web/
-├── packages/
-│   ├── tokens/                  # pulls design-guidelines@tag; generates CSS variables
-│   │                            #   per display mode (light/dark/high-contrast/…)
-│   └── ui/                      # Civic Calm component library (built from tokens,
-│                                #   mode-aware via CSS variable switching)
 ├── apps/
 │   ├── design-system/           # docs site — renders design-guidelines content
 │   │   └── (routes: foundations, components, patterns, accessibility, changelog;
@@ -331,15 +356,15 @@ design-web/
 └── .github/workflows/
     ├── ci.yml                   # runs design-tools checkers on our own apps —
     │                            #   the design system site must pass its own rules
-    └── sync-guidelines.yml      # triggered by design-guidelines release dispatch:
-                                 #   bump pinned tag, regenerate tokens, rebuild, PR
+    └── sync-releases.yml        # triggered by design-guidelines / design-ui release
+                                 #   dispatch: bump pinned versions, rebuild, PR
 ```
 
-Deploys independently per app; single PR flow for shared code. The checker UI stays thin — all evaluation logic lives in `design-tools` so CLI, API, and web UI can never disagree.
+Deploys independently per app; single PR flow for shared code. The checker UI stays thin — all evaluation logic lives in `design-tools` so CLI, API, and web UI can never disagree. Content rendering (guidelines sections, component specs) pairs each spec with live examples built from `@nepal-gov/ui`.
 
 ---
 
-## 3. `design-tools`
+## 4. `design-tools`
 
 Owner: web lead. The checker engines: evaluate any website (later: Figma files, mobile apps) against the guidelines and produce actionable reports with fixes. One engine, three delivery forms — **CLI** (for any team's CI), **API service** (backs the web checker UI), and **GitHub Action**.
 
@@ -381,9 +406,59 @@ Design decisions that matter:
 - **Reports are the product.** Every finding = rule id + guideline link + severity + evidence (screenshot/selector) + concrete fix (en/ne). Export as HTML for humans, JSON for CI gates, and the §20 checklist format for procurement/QA.
 - **Dogfooding:** `design-web` CI runs these checkers on the design system site and depot themselves — the system must pass its own standard before asking departments to.
 
+Note: `rules-engine` and `report` are published as packages so `design-ai` (and any other consumer) can use them by tag.
+
 ---
 
-## 4. `design-icons`
+## 5. `design-ai`
+
+Owner: web lead. Makes AI coding tools (Claude, Codex, Cursor, …) generate guideline-compliant code *by default*. Its own repo because its audience (external developers' AI tooling) and release cadence (guidelines releases + MCP spec churn) differ from both `design-web` and `design-tools`; it consumes the published `rules-engine` from `design-tools` and content from `design-guidelines`, both by tag. A repo named `design-ai` is also what a developer searching "how do I hook my AI tools up to this" actually finds.
+
+```
+design-ai/
+├── mcp/                         # MCP server: get_token (per display mode), get_component,
+│   │                            #   get_pattern, get_icon, search_guidelines (ne/en),
+│   │                            #   validate_snippet, check_page — wraps rules-engine
+│   ├── local/                   #   npx @nepal-gov/design-mcp
+│   └── remote/                  #   hosted MCP endpoint (no install needed)
+├── skill/                       # Claude Skill "nepal-gov-design": SKILL.md index +
+│   │                            #   on-demand reference files (tokens, typography, forms,
+│   │                            #   identity, content rules, do/don'ts)
+│   └── hooks/                   #   Claude Code hook: lint edited files during the session
+├── agents-md/                   # AGENTS.md / CLAUDE.md template + `init` command
+│                                #   (AGENTS.md is the cross-tool convention — not Claude-only)
+├── generators/                  # build scripts: guidelines@tag → skill reference files,
+│                                #   AGENTS.md template, llms.txt content for design-web
+└── .github/workflows/
+    ├── ci.yml
+    └── release.yml              # on guidelines release dispatch: regenerate artifacts,
+                                 #   publish mcp/skill/init packages
+```
+
+Three layers — context, capability, enforcement:
+
+**Context — teach the model the rules:**
+- `skill/` — a Claude Skill (`nepal-gov-design`): lightweight SKILL.md index + on-demand reference files (tokens, typography, forms, identity, content rules, do/don'ts). Dropped into any project.
+- `agents-md/` — a short AGENTS.md/CLAUDE.md block written by `npx @nepal-gov/design init`; AGENTS.md is the cross-tool convention, so this is not Claude-only.
+- `design-web` serves **`/llms.txt`** and every guideline page as clean markdown (e.g. `/components/button.md`) so any URL-fetching tool gets accurate, current guidance instead of training-data guesses (content generated here in `generators/`, served by the website).
+
+**Capability — let agents query and self-check (MCP server):**
+- Lookup tools: `get_token` (per display mode), `get_component`, `get_pattern`, `get_icon`, `search_guidelines` (bilingual).
+- Validation tools: `validate_snippet` (run the rule engine on generated HTML/CSS *before* the agent presents it) and `check_page` (full checker against a dev server). This closes the loop: generate → validate → self-fix → present.
+- Distribution: `npx @nepal-gov/design-mcp` locally + a hosted remote MCP endpoint; the server always reports which guidelines version it serves.
+
+**Enforcement — the backstop:**
+- Same `design-tools` CLI/Action gates AI-generated code in CI like human code.
+- The skill ships a Claude Code hook that lints edited files during the session, so violations surface immediately, not at PR time.
+
+Non-negotiables:
+- **All AI artifacts are build outputs of the `design-guidelines` release pipeline** — skill reference files, AGENTS.md template, llms.txt content are generated from tagged guideline content, never hand-written, so AI context can never drift from policy.
+- **Rules must be machine-followable.** Every new guideline chapter should answer "how would an AI verify this?" — the `rules/` YAML pass conditions are what make the AI layer real.
+- **The UI kit stays the foundation.** The most effective compliance mechanism is making `@nepal-gov/ui` the easiest path; the AI layer steers tools toward using it rather than hand-rolling almost-right components.
+
+---
+
+## 6. `design-icons`
 
 Owner: illustration lead. Icons are code-adjacent — they compile into a package the UI kit and depot both use.
 
@@ -402,7 +477,7 @@ Community entry point #1: "add an icon" = one SVG + one YAML in a PR.
 
 ---
 
-## 5. `design-assets`
+## 7. `design-assets`
 
 Owner: illustration lead. Everything visual that isn't an icon.
 
@@ -438,7 +513,7 @@ design-assets/
 
 ---
 
-## 6. `design-fonts`
+## 8. `design-fonts`
 
 Owner: fonts lead.
 
@@ -454,7 +529,7 @@ design-fonts/
 
 ---
 
-## 7. `design-figma`
+## 9. `design-figma`
 
 Owner: Figma lead. The Figma files live in Figma; this repo makes the library versioned and auditable.
 
@@ -470,7 +545,7 @@ design-figma/
 
 ---
 
-## 8. `.github` (org-level)
+## 10. `.github` (org-level)
 
 Shared community-health defaults for every repo in the org.
 
@@ -494,13 +569,18 @@ Note: if `nepal-government/.github` already exists for the wider org, add these 
 ## Dependency flow
 
 ```
-design-guidelines ──tags──────────► design-web (tokens, content, schemas)
-        │  (content, tokens+modes,       ▲              │ checker UI calls
-        │   data, rules, schemas)        │              ▼
-        ├──────► design-figma            │        design-tools API/CLI
-        ├──rules──► design-tools ────────┤          (also runs in any
-        └── schemas validate ┐           │           department's CI via
-design-icons ────────────────┴───────────┤           GitHub Action)
+design-guidelines ──tags──────────► design-web (tokens, content, schemas,
+        │  (content, tokens+modes,       ▲       llms.txt + .md endpoints)
+        │   data, rules, schemas)        │              │ checker UI calls
+        ├──────► design-figma            │              ▼
+        ├──rules──► design-tools ────────┤        design-tools API/CLI
+        │               │ rules-engine   │          (also runs in any
+        │               ▼                │           department's CI via
+        ├─content─► design-ai            │           GitHub Action)
+        │             (MCP server, Claude Skill,
+        │              AGENTS.md init → AI coding tools)
+        └── schemas validate ┐           │
+design-icons ────────────────┴───────────┤
 design-assets ───────────────────────────┤──► depot app
 design-fonts ────────────────────────────┘      │ download links
                                                 ▼
@@ -512,10 +592,12 @@ object storage (S3/R2) ──► CDN ──► public downloads
 
 1. `.github` additions + teams/permissions
 2. `design-guidelines` (migrate the v0.1 HTML draft into it; include `tokens/modes/` and first `rules/` set from day one)
-3. `design-web` skeleton pinned to `design-guidelines@v0.1.0`
-4. `design-icons`, `design-fonts` (feed the UI kit)
-5. `design-tools` starting with `checks-accessibility` (axe + contrast across modes) — highest value, fully deterministic; design-conformance and AI checks follow
-6. `design-assets`, `design-figma` (parallel, non-blocking)
+3. `design-ui` — tokens package first (generated from guidelines), then core components
+4. `design-web` skeleton installing `@nepal-gov/tokens` + `@nepal-gov/ui`
+5. `design-icons`, `design-fonts` (feed the UI kit)
+6. `design-tools` starting with `checks-accessibility` (axe + contrast across modes) — highest value, fully deterministic; design-conformance and AI checks follow
+7. `design-ai` — skill + AGENTS.md first (cheap, immediate value), MCP server once rules-engine is published
+8. `design-assets`, `design-figma` (parallel, non-blocking)
 
 ## Open decisions
 
@@ -528,3 +610,6 @@ object storage (S3/R2) ──► CDN ──► public downloads
 | Object storage provider | Cloudflare R2 (zero egress) or S3 + CloudFront — decide with hosting choice |
 | Initial display modes | Ship light + dark at v0.1; high-contrast and color-blind-safe validated before pilot (v0.5); large-text and reduced-motion tracked as mode files from the start |
 | AI checker model/hosting | Decide with API hosting; AI findings always advisory, labeled, human-reviewable |
+| Remote MCP hosting | Decide with API hosting; local `npx` server ships first |
+| UI kit framework | React components first (largest ecosystem) with `@nepal-gov/css` for framework-free use; web components later if demand appears |
+| npm scope | Reserve `@nepal-gov` (or final org scope) on npm before first publish |
