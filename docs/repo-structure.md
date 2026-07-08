@@ -63,7 +63,7 @@ Principles:
 1. **Plain text is the master.** Markdown + YAML/JSON in git. The HTML/PDF/DOCX handed to officials is a *build output*, never the source.
 2. **Prose and data are separated.** Anything that is a table of values (colors, spacing, breakpoints, statuses) lives in a structured data file. Markdown explains *why*; data files are what tools consume.
 3. **Everything bilingual-capable.** Every title/label field has an optional `_ne` (Nepali) counterpart from day one.
-4. **Versioned like software**, with semver tags matching the guideline's own scheme (§19.3).
+4. **Versioned like software**, with semver tags matching the guideline's own scheme (§21.3).
 5. **Validated in CI** so a malformed edit can never break downstream consumers.
 
 ```
@@ -88,7 +88,7 @@ design-guidelines/
 │                                #   one YAML per rule — id, section ref, severity,
 │                                #   check type (automated | ai-assisted | manual),
 │                                #   pass condition, fix guidance (en/ne)
-├── components/                  # button.md, text-input.md … (§10.1 template)
+├── components/                  # button.md, text-input.md … (§11.1 template)
 ├── patterns/
 │   ├── citizen/                 # apply-for-service.md, track-application.md …
 │   └── officer/                 # review-application.md, approve-reject.md …
@@ -192,7 +192,7 @@ Structure reserves stable `id`s now so these land incrementally without renumber
 |---|---|---|
 | `iconography-style` | Icon grid, stroke, corner radius, filled/outline, metaphor rules | Prerequisite before mass icon production; `design-icons` validates against it |
 | `illustration-photography` | Illustration style, depicting people across Nepali contexts, photo standards | Do/don't format |
-| `data-visualization` | Chart types, color-blind-safe chart palettes mapped to modes, table vs. chart | Backs §13 dashboards |
+| `data-visualization` | Chart types, color-blind-safe chart palettes mapped to modes, table vs. chart | Backs §14 dashboards |
 | `motion` | Durations, easings, what may animate, reduced-motion behavior | The guidance behind the existing motion tokens/mode |
 | `voice-and-tone` | Formality register (तपाईं), citizen vs. officer address, error tone, number/currency/date formatting (लाख/करोड, रु, BS display) | Extends §5 |
 | `print-documents` | Letterheads, certificates, receipts, stamps | Placeholder marks scope |
@@ -200,7 +200,7 @@ Structure reserves stable `id`s now so these land incrementally without renumber
 | `social-media` | Profile images, post templates, correct emblem use | Where misuse most often happens |
 | `sound` | Notification sounds, kiosk audio cues | Accessibility-linked, later |
 
-**Component spec (files in `components/`)** — mirrors the guideline's §10.1 documentation template; CI rejects a component missing any required field, enforcing "a component is official only when fully documented":
+**Component spec (files in `components/`)** — mirrors the guideline's §11.1 documentation template; CI rejects a component missing any required field, enforcing "a component is official only when fully documented":
 
 ```yaml
 ---
@@ -224,7 +224,7 @@ tokens:                         # semantic tokens this component consumes
   - color.action.primary.default
   - space.4
   - radius.md
-figma: "Button / Primary"       # library path per §17.3 naming
+figma: "Button / Primary"       # library path per §19.3 naming
 ---
 
 ## When to use
@@ -248,7 +248,7 @@ audience: citizen               # citizen | officer
 status: draft
 since: 0.1.0
 components: [stepper, text-input, file-upload, error-summary, alert]  # component ids
-security:                       # §16 rules this pattern must implement
+security:                       # §17 rules this pattern must implement
   - confirm-before-submit
   - save-draft
 ---
@@ -268,7 +268,7 @@ security:                       # §16 rules this pattern must implement
 
 ```yaml
 id: form-visible-labels          # stable rule id
-section: forms-validation        # guideline section id (§11)
+section: forms-validation        # guideline section id (§12)
 title: Inputs must have visible persistent labels
 title_ne: …
 severity: error                  # error | warning | info
@@ -308,7 +308,7 @@ statuses:
 
 ### 1.2 Versioning & releases
 
-- **Semver git tags:** `v0.1.0` (draft) → `v0.5.x` (pilot) → `v1.0.0` (official) → `v2.0.0` (breaking, needs migration plan) — matching §19.3.
+- **Semver git tags:** `v0.1.0` (draft) → `v0.5.x` (pilot) → `v1.0.0` (official) → `v2.0.0` (breaking, needs migration plan) — matching §21.3.
 - `CHANGELOG.md` entry per release: **Added / Changed / Deprecated / Removed**, referencing section/component `id`s.
 - Per-file `status` + `since` lets the website badge each section/component independently (a v1.0 release can still contain `pilot` components).
 - Deprecations are never deleted immediately: set `status: deprecated` and `replaces` on the successor so the website auto-renders migration pointers.
@@ -414,7 +414,7 @@ design-tools/
 │   │                            #   (rule text from guidelines = the AI's rubric;
 │   │                            #    AI findings always labeled + human-reviewable)
 │   └── report/                  # renderers: JSON → HTML report / PR comment /
-│                                #   compliance-checklist (§20) export
+│                                #   compliance-checklist (§22) export
 ├── apps/
 │   ├── cli/                     # `gov-design check <url>` — runs locally / in CI
 │   └── api/                     # hosted service consumed by design-web checker app
@@ -428,8 +428,8 @@ design-tools/
 Design decisions that matter:
 
 - **Rules live in `design-guidelines`, not here.** This repo implements *how* to check; the guidelines repo defines *what* to check (`rules/` YAML). A new guideline version can add/retire rules without touching tool code, and the tool always reports which guideline version it checked against.
-- **Three check tiers** per rule (`automated` / `ai-assisted` / `manual`): deterministic checks are trusted; AI findings are clearly labeled as advisory with confidence and evidence; manual rules appear as a guided checklist so the report always covers the full §20 compliance surface.
-- **Reports are the product.** Every finding = rule id + guideline link + severity + evidence (screenshot/selector) + concrete fix (en/ne). Export as HTML for humans, JSON for CI gates, and the §20 checklist format for procurement/QA.
+- **Three check tiers** per rule (`automated` / `ai-assisted` / `manual`): deterministic checks are trusted; AI findings are clearly labeled as advisory with confidence and evidence; manual rules appear as a guided checklist so the report always covers the full §22 compliance surface.
+- **Reports are the product.** Every finding = rule id + guideline link + severity + evidence (screenshot/selector) + concrete fix (en/ne). Export as HTML for humans, JSON for CI gates, and the §22 checklist format for procurement/QA.
 - **Dogfooding:** `design-web` CI runs these checkers on the design system site and depot themselves — the system must pass its own standard before asking departments to.
 
 Note: `rules-engine` and `report` are published as packages so `design-ai` (and any other consumer) can use them by tag.
@@ -565,7 +565,7 @@ design-figma/
 ├── mapping/                     # component-name map: "Button / Primary" ↔ button id
 ├── library/
 │   ├── CHANGELOG.md             # what changed per published library version
-│   └── structure.md             # page structure per §17.1 (00 Cover … 99 Archive)
+│   └── structure.md             # page structure per §19.1 (00 Cover … 99 Archive)
 └── exports/                     # periodic token/style exports for audit diffing
 ```
 
@@ -578,7 +578,7 @@ Shared community-health defaults for every repo in the org.
 ```
 .github/
 ├── profile/README.md            # org landing: what the design system is, repo map, roadmap link
-├── CONTRIBUTING.md              # §19.2 contribution process (propose → review → pilot → official)
+├── CONTRIBUTING.md              # §21.2 contribution process (propose → review → pilot → official)
 ├── CODE_OF_CONDUCT.md
 └── ISSUE_TEMPLATE/
     ├── propose-component.yml
@@ -632,7 +632,7 @@ object storage (S3/R2) ──► CDN ──► public downloads
 | Token format | W3C DTCG (as above) — best tool ecosystem |
 | Package distribution | npm package under a gov scope; GitHub release tarball as fallback |
 | Nepali content timing | Fields present from day one; content backfilled before pilot (v0.5) |
-| Who approves releases | Map §19.1 roles to GitHub CODEOWNERS on `content/`, `tokens/`, `components/` |
+| Who approves releases | Map §21.1 roles to GitHub CODEOWNERS on `content/`, `tokens/`, `components/` |
 | Object storage provider | Cloudflare R2 (zero egress) or S3 + CloudFront — decide with hosting choice |
 | Initial display modes | Ship light + dark at v0.1; high-contrast and color-blind-safe validated before pilot (v0.5); large-text and reduced-motion tracked as mode files from the start |
 | AI checker model/hosting | Decide with API hosting; AI findings always advisory, labeled, human-reviewable |

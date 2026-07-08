@@ -11,7 +11,7 @@ One engine, three delivery forms: CLI, hosted API (backs the web checker UI), Gi
 - `checks-accessibility` — axe-core + WCAG 2.2, keyboard/focus probes, contrast across all display modes
 - `checks-design` — token conformance, type scale, tap targets, emblem misuse detection
 - `checks-ai` — AI-assisted rules (plain-language, pattern quality); always advisory + labeled
-- `report` — JSON → HTML report / PR comment / §20 compliance-checklist export
+- `report` — JSON → HTML report / PR comment / §22 compliance-checklist export
 
 ## Principles
 - Rules live in design-guidelines; this repo implements how to check, not what.
