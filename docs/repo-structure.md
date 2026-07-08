@@ -70,15 +70,13 @@ Principles:
 design-guidelines/
 ├── guidelines.yaml              # manifest: version, status, owner, languages
 ├── CHANGELOG.md
-├── content/                     # 01-executive-summary.md … 20-compliance-checklist.md
-│   └── <section>/examples/      # do-*.png / dont-*.png images referenced by guidance items
-├── identity/                    # national identity specifications (see 1.1a):
-│   ├── emblem.md                #   construction, clear space, min sizes, color values
-│   ├── flag.md                  #   constitutional geometric construction, digital use
-│   ├── government-header.md     #   placement in the official header, ne/en lockups
-│   ├── co-branding.md           #   ministry/department co-branding rules
-│   ├── favicon-app-icon.md      #   emblem at small sizes; approved simplifications
-│   └── <topic>/examples/        #   misuse gallery: do-*/dont-* images per topic
+├── guidelines/                  # guideline content, grouped; global order via section: frontmatter
+│   ├── 01-overview/             #   executive summary, research, vision & principles
+│   ├── 02-identity/             #   brand identity + national identity specs (see 1.1a):
+│   │                            #     emblem, flag, government-header, co-branding, favicon
+│   ├── 03-language/  04-accessibility/  05-foundations/  06-components/
+│   ├── 07-experience/ 08-platforms/  09-security/  10-governance/
+│   └── <group>/<file>.ne.md     #   Nepali bodies as siblings; examples/ folders for do/dont images
 ├── tokens/                      # DTCG JSON: color.primitive, color.semantic,
 │   │                            #   spacing, typography, radius, elevation, motion
 │   └── modes/                   # semantic overrides per display mode:
