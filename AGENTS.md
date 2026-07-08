@@ -1,6 +1,8 @@
 # AGENTS.md — design-web
 
-Monorepo for the user-facing apps: `apps/design-system` (docs site), `apps/depot` (asset depot), `apps/checker` (compliance tool UI). Installs `@nepal-gov/tokens` + `@nepal-gov/ui` from design-ui like any government app.
+Monorepo for the web platform: apps/ (design-system docs site, depot, checker UI) and packages/ (tokens, css, ui, checker, ai — consolidated from the former design-ui, design-tools, design-ai repos while the team is small).
+
+Package-specific rules live in each package's README. Key ones: token values are GENERATED from design-guidelines (never hand-edit); components map to spec ids and work in every display mode; checker rules come from design-guidelines/rules/ (implement HOW, never define WHAT); AI artifacts are generated from guidelines@tag; checks-ai findings are always advisory.
 
 ## Rules
 - No hand-authored guideline content here — the docs site RENDERS design-guidelines@tag. To fix guideline text, PR the design-guidelines repo.

@@ -5,6 +5,33 @@
 
 ---
 
+## Current phase (updated 2026-07-08)
+
+The sections below describe the **full end-state architecture** (10 repos). While the team is
+three people, we deliberately operate a **consolidated 4-repo subset** — the internal folder
+structures match the end-state, so splitting back out later is mechanical:
+
+| Active repo | Absorbs (end-state repos) | How |
+|---|---|---|
+| `design-guidelines` | — | Unchanged; already complete with the document pipeline. |
+| `design-web` | `design-ui`, `design-tools`, `design-ai` | As `packages/tokens\|css\|ui`, `packages/checker`, `packages/ai`. npm publishing happens from the monorepo. |
+| `design-assets` | `design-icons`, `design-fonts`, `design-figma` | As `icons/`, `fonts/`, `figma/` folders. Object storage deferred until the first large binary. |
+| `.github` | — | Unchanged. |
+
+Also deferred until there is real demand: tag-pinning between our own repos (internal-only
+consumers), rc/pilot release machinery, per-rule fixtures, non-light/dark display modes,
+hosted checker API, remote MCP. **Not deferred:** bilingual `_ne` fields, semantic tokens,
+permanent ids, WCAG 2.2 AA, the guidelines schemas, and the document pipeline — cheap now,
+expensive to retrofit.
+
+**Split-out trigger:** a package repo is re-created when it gains a dedicated owner or its
+first external consumer (e.g. another ministry app installing `@nepal-gov/ui`).
+
+Build order for this phase: docs-site MVP → ~10 real components (light+dark) → static depot
+page → checker CLI + GitHub Action → skill/MCP.
+
+---
+
 ## Repos at a glance
 
 | Repo | Owner | Purpose | Consumed by |

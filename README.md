@@ -1,18 +1,27 @@
 # design-web
 
-Monorepo for the user-facing applications of the Nepal Government Digital Design System (Civic Calm).
+Monorepo for the Nepal Digital Design System (Civic Calm) web platform: the docs site,
+asset depot, UI packages, checker tools, and AI layer.
 
 ## Structure
 
-- `apps/design-system` — docs site rendering the guidelines content, with live examples built from `@nepal-gov/ui`; also serves `/llms.txt` and per-page markdown endpoints
-- `apps/depot` — asset depot: browse / search / download / contribute icons, illustrations, photos, animations, fonts
-- `apps/checker` — compliance tool UI; thin frontend over the `design-tools` API
-- `docs/` — architecture decisions and proposals (see `docs/repo-structure.md`)
+- `packages/tokens` — `@nepal-gov/tokens`: CSS variables generated from design-guidelines, per display mode
+- `packages/css` — `@nepal-gov/css`: framework-agnostic stylesheet
+- `packages/ui` — `@nepal-gov/ui`: Civic Calm component library
+- `packages/checker` — compliance checker engines (accessibility/design/AI checks, CLI, API, GitHub Action)
+- `packages/ai` — AI layer: MCP server, Claude Skill, AGENTS.md init, llms.txt generators
+- `apps/design-system` — public docs site (renders design-guidelines content, serves /llms.txt)
+- `apps/depot` — asset depot (catalog from design-assets)
+- `apps/checker` — compliance tool UI (thin frontend over packages/checker)
+- `docs/` — architecture decisions (see `docs/repo-structure.md`)
 
-Tokens and components live in the `design-ui` repo (`@nepal-gov/tokens`, `@nepal-gov/css`, `@nepal-gov/ui`) — this repo installs them like any other government app.
+`packages/ui|css|tokens`, `packages/checker`, and `packages/ai` were separate repos
+(design-ui, design-tools, design-ai) in the full architecture; they are consolidated here
+while the team is small and split back out when they gain owners/consumers.
+See "Current phase" in docs/repo-structure.md.
 
 ## Rules
 
-- Consume `design-guidelines`, `design-ui`, `design-icons`, `design-assets`, `design-fonts` by tagged release, never main.
-- CI runs the `design-tools` checkers on our own apps — this site must pass its own standard.
-- Apps deploy independently.
+- `design-guidelines` is the source of truth — consumed by tagged release.
+- CI runs the checker on our own apps; this site must pass its own standard.
+- No hand-authored guideline content here; PR design-guidelines instead.
