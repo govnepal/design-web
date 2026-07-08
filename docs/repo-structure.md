@@ -17,6 +17,7 @@ structures match the end-state, so splitting back out later is mechanical:
 | `design-web` | `design-ui`, `design-tools`, `design-ai` | As `packages/tokens\|css\|ui`, `packages/checker`, `packages/ai`. npm publishing happens from the monorepo. |
 | `design-assets` | `design-icons`, `design-fonts`, `design-figma` | As `icons/`, `fonts/`, `figma/` folders. Object storage deferred until the first large binary. |
 | `.github` | — | Unchanged. |
+| `design-mobile` | — | Created as a **reserved** repo: holds the mobile implementation contract (token pipeline via Style Dictionary, spec-id mapping, planned Flutter/RN packages); active work starts with the first real citizen-app project. |
 
 Also deferred until there is real demand: tag-pinning between our own repos (internal-only
 consumers), rc/pilot release machinery, per-rule fixtures, non-light/dark display modes,
