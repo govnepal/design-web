@@ -1,6 +1,6 @@
 # nepal-government — Design System Repository Structure
 
-**Org:** `github.com/nepal-government`
+**Org:** `github.com/govnepal` (staging) → `github.com/nepal-government` (official, once approved)
 **Prefix:** all design-system repos use the `design-` prefix so they group together inside a broader government org and are instantly identifiable.
 
 ---
