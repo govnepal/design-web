@@ -89,6 +89,21 @@ test("the emblem is never drawn, only loaded from a verified master", () => {
   assert.doesNotMatch(header, /background-image|content:\s*url|mask-image/);
 });
 
+test("a button styled as a link keeps its label colour through the visited state", () => {
+  // A <a class="gov-button--primary"> is a legitimate "start" CTA. The generic `a:visited` rule
+  // (link.css) has higher specificity than a single button class, so without an explicit :visited
+  // override the label would turn the visited-link colour — invisible on the filled button — after
+  // one click. Each filled variant must pin its label colour on :visited.
+  const button = src.find((s) => s.file === "button.css").text;
+  for (const variant of ["primary", "secondary", "destructive"]) {
+    assert.match(
+      button,
+      new RegExp(`\\.gov-button--${variant}:visited`),
+      `.gov-button--${variant} must handle :visited so a link-styled button stays legible after a click`,
+    );
+  }
+});
+
 test("print forces the light-mode token values so dark mode never prints dark (§5.1.5)", () => {
   const printBlock = bundle.slice(bundle.indexOf("@media print"));
   assert.match(printBlock, /--gov-color-background-surface:\s*#FFFFFF/i);

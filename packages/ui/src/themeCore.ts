@@ -56,7 +56,11 @@ export function applyTheme(root: HTMLElement, state: ThemeState): void {
   if (state.colorMode) root.setAttribute("data-mode", state.colorMode);
   else root.removeAttribute("data-mode");
 
-  root.toggleAttribute("data-large-text", state.largeText);
+  // These are set to the literal "true" to match the generated CSS selectors
+  // ([data-large-text="true"], [data-reduced-motion="true"]) — an empty attribute value would not
+  // match, which is why large-text silently did nothing before.
+  if (state.largeText) root.setAttribute("data-large-text", "true");
+  else root.removeAttribute("data-large-text");
   if (state.reducedMotion) root.setAttribute("data-reduced-motion", "true");
   else root.removeAttribute("data-reduced-motion");
 
@@ -71,4 +75,4 @@ export function applyTheme(root: HTMLElement, state: ThemeState): void {
  */
 export const themeInitScript = `(function(){try{var s=JSON.parse(localStorage.getItem(${JSON.stringify(
   THEME_STORAGE_KEY,
-)})||"{}");var r=document.documentElement;if(s.colorMode)r.setAttribute("data-mode",s.colorMode);if(s.largeText)r.setAttribute("data-large-text","");if(s.reducedMotion)r.setAttribute("data-reduced-motion","true");r.setAttribute("data-density",s.density||"citizen-website");r.setAttribute("lang",s.language||"ne");}catch(e){}})();`;
+)})||"{}");var r=document.documentElement;if(s.colorMode)r.setAttribute("data-mode",s.colorMode);if(s.largeText)r.setAttribute("data-large-text","true");if(s.reducedMotion)r.setAttribute("data-reduced-motion","true");r.setAttribute("data-density",s.density||"citizen-website");r.setAttribute("lang",s.language||"ne");}catch(e){}})();`;

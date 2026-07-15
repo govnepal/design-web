@@ -1,6 +1,6 @@
 {
   "name": "@govnepal/css",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Civic Calm — the framework-agnostic stylesheet. Semantic HTML plus .gov-* classes, no JavaScript.",
   "license": "MIT",
   "type": "module",

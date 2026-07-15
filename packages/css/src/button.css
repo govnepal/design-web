@@ -39,8 +39,21 @@
   margin-inline-start: var(--gov-target-min-spacing);
 }
 
+/* A button may be rendered as a link (<a class="gov-button">) for a primary call-to-action that
+ * navigates — a "start" button. The generic `a` and `a:visited` rules (link.css) would otherwise
+ * win: `a:visited` has higher specificity (0,1,1) than a single button class (0,1,0), so after one
+ * click the label would turn the link-visited colour — invisible on a filled button. Pinning the
+ * label colour on `:link`/`:visited` per variant restores the correct specificity, and the
+ * inherited underline is removed. */
+.gov-button:link,
+.gov-button:visited {
+  text-decoration: none;
+}
+
 /* --- Variants ---------------------------------------------------------------------------- */
-.gov-button--primary {
+.gov-button--primary,
+.gov-button--primary:link,
+.gov-button--primary:visited {
   background: var(--gov-color-action-primary-default);
   color: var(--gov-color-text-on-action);
 }
@@ -53,7 +66,9 @@
   background: var(--gov-color-action-primary-active);
 }
 
-.gov-button--secondary {
+.gov-button--secondary,
+.gov-button--secondary:link,
+.gov-button--secondary:visited {
   background: transparent;
   color: var(--gov-color-action-secondary-text);
   border-color: currentColor;
@@ -66,7 +81,9 @@
 /* Always paired with a confirmation dialog (components/button.md) — the colour is a warning, not
  * the safeguard. Its red is deliberately the FUNCTIONAL red, never Simrik: "the colour of the
  * nation is never the colour of failure" (§2.1). */
-.gov-button--destructive {
+.gov-button--destructive,
+.gov-button--destructive:link,
+.gov-button--destructive:visited {
   background: var(--gov-color-action-destructive-default);
   color: var(--gov-color-text-on-action);
 }
