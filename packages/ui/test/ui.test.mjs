@@ -13,6 +13,12 @@ import {
   TextInput,
   ErrorSummary,
   Header,
+  Checkbox,
+  RadioGroup,
+  Select,
+  Stepper,
+  Emblem,
+  Flag,
 } from "../dist/index.js";
 
 afterEach(cleanup);
@@ -146,12 +152,112 @@ test("Header is a banner, leads with a skip link, and switches language on click
   assert.ok(screen.getByText("EN"));
 });
 
-test("Header shows an honest missing-emblem placeholder, never invented artwork", () => {
+test("Header renders the verified emblem by default, as a cached image never inline artwork", () => {
   render(
     withTheme(h(Header, { officeNe: "गृह मन्त्रालय", officeEn: "Ministry of Home Affairs" }), { language: "en" }),
   );
-  const mark = screen.getByRole("img", { name: /asset missing/ });
-  // It must be a text placeholder — no <img>, no <svg>, nothing that could read as a real emblem.
-  assert.equal(mark.querySelector("img"), null);
-  assert.equal(mark.querySelector("svg"), null);
+  // The emblem is an <img> of the verified master (identity/emblem) — the institution named in the
+  // accessible name, never "logo", and never redrawn inline (no <svg> path data in the header).
+  const emblem = screen.getByRole("img", { name: /Emblem of the Government of Nepal/ });
+  assert.equal(emblem.tagName, "IMG");
+  assert.match(emblem.getAttribute("src"), /emblem-of-nepal\.svg/);
+  assert.equal(document.querySelector(".gov-header svg"), null, "the emblem must not be inline SVG");
+});
+
+test("Header can opt out of the emblem with emblem={null}", () => {
+  render(withTheme(h(Header, { emblem: null, officeNe: "गृह", officeEn: "Home" })));
+  assert.equal(screen.queryByRole("img"), null);
+});
+
+test("Checkbox binds the whole label to a real checkbox and is never pre-ticked", () => {
+  render(withTheme(h(Checkbox, { label: "I confirm the information is correct" })));
+  const box = screen.getByLabelText("I confirm the information is correct");
+  assert.equal(box.type, "checkbox");
+  assert.equal(box.checked, false, "a declaration must never be pre-ticked — that's the legal point");
+});
+
+test("RadioGroup is a fieldset with the question as legend, no default selection", () => {
+  render(
+    withTheme(
+      h(RadioGroup, {
+        legend: "Gender",
+        name: "gender",
+        options: [
+          { value: "f", label: "महिला" },
+          { value: "m", label: "पुरुष" },
+          { value: "o", label: "अन्य" },
+        ],
+      }),
+    ),
+  );
+  // The three legal options are all visible radios (never a select that hides them, §7.1).
+  const group = screen.getByRole("group", { name: "Gender" });
+  assert.ok(group);
+  const radios = screen.getAllByRole("radio");
+  assert.equal(radios.length, 3);
+  assert.ok(radios.every((r) => !r.checked), "no default when the choice has legal weight");
+});
+
+test("RadioGroup error marks the group, not one option", () => {
+  render(
+    withTheme(
+      h(RadioGroup, {
+        legend: "Calendar",
+        name: "cal",
+        error: "Select a calendar",
+        options: [
+          { value: "bs", label: "BS" },
+          { value: "ad", label: "AD" },
+        ],
+      }),
+    ),
+  );
+  const group = screen.getByRole("group", { name: "Calendar" });
+  assert.equal(group.getAttribute("aria-invalid"), "true");
+  assert.match(group.getAttribute("aria-describedby"), /error/);
+});
+
+test("Select is a native select with a disabled instruction option, not a fake value", () => {
+  render(
+    withTheme(
+      h(Select, {
+        label: "Province",
+        placeholder: "Select your province",
+        options: [
+          { value: "1", label: "Koshi" },
+          { value: "3", label: "Bagmati" },
+        ],
+      }),
+    ),
+  );
+  const select = screen.getByLabelText("Province");
+  assert.equal(select.tagName, "SELECT");
+  const first = select.querySelector("option");
+  assert.equal(first.disabled, true, "the instruction option must not be selectable as a value");
+});
+
+test("Stepper is an ordered list marking the current step", () => {
+  render(
+    withTheme(
+      h(Stepper, {
+        current: 1,
+        steps: [{ label: "Personal details" }, { label: "Documents" }, { label: "Review" }],
+      }),
+      { language: "en" },
+    ),
+  );
+  const current = document.querySelector('[aria-current="step"]');
+  assert.ok(current, "the current step carries aria-current=step");
+  assert.match(current.textContent, /Documents/);
+  assert.equal(document.querySelector("ol.gov-stepper").tagName, "OL");
+});
+
+test("Emblem and Flag are img of the verified masters, named the institution not 'logo'", () => {
+  const { rerender } = render(h(Emblem, {}));
+  const emblem = screen.getByRole("img");
+  assert.match(emblem.getAttribute("src"), /emblem-of-nepal\.svg/);
+  assert.doesNotMatch(emblem.getAttribute("alt").toLowerCase(), /logo/);
+
+  rerender(h(Flag, {}));
+  assert.match(screen.getByRole("img").getAttribute("src"), /flag-of-nepal\.svg/);
 });

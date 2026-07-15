@@ -1,0 +1,19 @@
+/* National identity marks — the emblem and flag (identity/emblem, identity/flag).
+ *
+ * Base sizing only. Both are <img> of verified masters; neither is boxed, recoloured, or given a
+ * background plate. The flag in particular has NO rectangular canvas — its double-pennant
+ * silhouette sits directly on the page background (identity/flag), so it never gets a border or
+ * fill here. */
+
+.gov-emblem {
+  block-size: auto;
+  max-inline-size: 100%;
+}
+
+.gov-flag {
+  block-size: auto;
+  max-inline-size: 100%;
+  /* Explicitly no border, background, or box — the constitutional shape must show as-is. */
+  background: none;
+  border: 0;
+}

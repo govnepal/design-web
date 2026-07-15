@@ -17,6 +17,14 @@ export const EXAMPLE_IDS = new Set([
   "container",
   "stack",
   "page-section",
+  "checkbox",
+  "radio",
+  "select",
+  "details",
+  "warning-text",
+  "phase-banner",
+  "stepper",
+  "language-switcher",
 ]);
 
 export function hasExample(id: string): boolean {

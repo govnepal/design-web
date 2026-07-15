@@ -11,7 +11,7 @@
     {
       "name": "assets",
       "repo": "../design-assets",
-      "ref": "main",
+      "ref": "add-emblem-flag",
       "dest": ".assets",
       "provides": "Self-hosted Noto fonts (woff2 + @font-face CSS); emblem masters, once they exist."
     }

@@ -32,32 +32,17 @@
   margin-inline-end: auto;
 }
 
-/* The emblem is loaded from the verified master in design-assets. It is NEVER drawn here — not
- * as an inline SVG, not as a font glyph, not as an approximation. Recreating, recolouring, or
- * tracing it is prohibited (identity/emblem), and an outdated or redrawn emblem is a legal error,
- * not a style choice. The reversed variant is selected for dark surfaces by the behavior layer. */
+/* The emblem is loaded from the verified master (identity/emblem), never drawn here — not as an
+ * inline SVG, not as a font glyph, not an approximation. Recreating, recolouring, or tracing it is
+ * prohibited; an outdated or redrawn emblem is a legal error, not a style choice. */
 .gov-header__emblem {
-  block-size: 48px;
-  inline-size: auto;
+  display: inline-flex;
   flex-shrink: 0;
 }
 
-/* Dev-only: shown when no emblem asset has been supplied. It is deliberately ugly and says so.
- * design-assets/emblems/files/ is currently EMPTY — no verified master exists yet — and the one
- * thing this system must not do is invent a stand-in that looks plausible enough to ship. */
-.gov-header__emblem-missing {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.gov-header__emblem .gov-emblem {
   block-size: 48px;
-  inline-size: 48px;
-  flex-shrink: 0;
-  border: var(--gov-border-width-md) dashed var(--gov-color-status-error-border);
-  color: var(--gov-color-status-error-text);
-  font-size: var(--gov-type-caption-font-size);
-  line-height: 1.1;
-  text-align: center;
-  font-weight: var(--gov-font-weight-semibold);
+  inline-size: auto;
 }
 
 /* Nepali first, English second — Article 7 makes Nepali in Devanagari the language of official

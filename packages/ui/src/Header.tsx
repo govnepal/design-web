@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { cx } from "./cx.js";
 import { useTheme, type Language } from "./ThemeProvider.js";
+import { Emblem } from "./Emblem.js";
 
 /**
  * Government header (components/header.md, identity/government-header) — on every page of every
@@ -17,8 +18,13 @@ import { useTheme, type Language } from "./ThemeProvider.js";
  */
 
 interface HeaderProps {
-  /** The verified emblem, e.g. <img src={emblemUrl} alt="…" /> from design-assets. Required in prod. */
+  /**
+   * The emblem. Defaults to the verified `<Emblem>` (served from the web root or @govnepal/css).
+   * Pass a custom node only to point at a different asset path; pass `null` to opt out entirely.
+   */
   emblem?: ReactNode;
+  /** Where the emblem master is served from, if not the default web-root path. */
+  emblemSrc?: string;
   /** Office name, Nepali first then English (Article 7). Both are shown; en hides on mobile. */
   officeNe: string;
   officeEn: string;
@@ -37,6 +43,7 @@ const EMBLEM_ALT = { ne: "नेपाल सरकारको निशान 
 
 export function Header({
   emblem,
+  emblemSrc,
   officeNe,
   officeEn,
   serviceName,
@@ -47,6 +54,11 @@ export function Header({
 }: HeaderProps) {
   const { language, setLanguage } = useTheme();
 
+  // Default to the verified emblem; `emblem={null}` opts out. The alt names the institution in the
+  // active language (identity/emblem — never "logo").
+  const emblemNode =
+    emblem === undefined ? <Emblem src={emblemSrc} alt={EMBLEM_ALT[language]} /> : emblem;
+
   return (
     <header className={cx("gov-header", className)} role="banner">
       {/* The skip link is the first focusable element on the page (§7.2, §4.1). */}
@@ -56,21 +68,7 @@ export function Header({
       <div className="gov-container">
         <div className="gov-header__inner">
           <span className="gov-header__lockup">
-            {emblem ? (
-              <span className="gov-header__emblem" role="img" aria-label={EMBLEM_ALT[language]}>
-                {emblem}
-              </span>
-            ) : (
-              // Dev-only. The real emblem is a verified master from design-assets; none exists yet.
-              <span
-                className="gov-header__emblem-missing"
-                role="img"
-                aria-label={`${EMBLEM_ALT[language]} — asset missing`}
-                title="Emblem master not yet available in design-assets/emblems"
-              >
-                निशान
-              </span>
-            )}
+            {emblemNode && <span className="gov-header__emblem">{emblemNode}</span>}
             <span className="gov-header__office">
               <span className="gov-header__office-ne" lang="ne">
                 {officeNe}

@@ -1,7 +1,26 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Container, Stack, PageSection, Button, Link, TextInput, ErrorSummary, Alert, Badge, Header } from "@govnepal/ui";
+import {
+  Container,
+  Stack,
+  PageSection,
+  Button,
+  Link,
+  TextInput,
+  ErrorSummary,
+  Alert,
+  Badge,
+  Header,
+  Checkbox,
+  RadioGroup,
+  Select,
+  Details,
+  WarningText,
+  PhaseBanner,
+  Stepper,
+  LanguageSwitcher,
+} from "@govnepal/ui";
 import { ModePanel } from "./ModePanel";
 
 /**
@@ -102,6 +121,71 @@ const EXAMPLES: Record<string, ReactNode> = {
       <PageSection variant="secondary-background" aria-label="Secondary band"><Container>Secondary background — page rhythm without decoration.</Container></PageSection>
     </div>
   ),
+
+  checkbox: (
+    <Stack gap={4}>
+      <Checkbox label="I confirm the information I have given is correct" />
+      <Checkbox label="Send me updates about this application" hint="Optional — you can change this later." />
+    </Stack>
+  ),
+
+  radio: (
+    <RadioGroup
+      legend="Gender (as on your citizenship certificate)"
+      name="ex-gender"
+      options={[
+        { value: "female", label: "महिला / Female" },
+        { value: "male", label: "पुरुष / Male" },
+        { value: "other", label: "अन्य / Other" },
+      ]}
+    />
+  ),
+
+  select: (
+    <Select
+      label="Province"
+      placeholder="Select your province"
+      hint="Then choose your district."
+      options={[
+        { value: "1", label: "Koshi" },
+        { value: "2", label: "Madhesh" },
+        { value: "3", label: "Bagmati" },
+        { value: "4", label: "Gandaki" },
+        { value: "5", label: "Lumbini" },
+        { value: "6", label: "Karnali" },
+        { value: "7", label: "Sudurpashchim" },
+      ]}
+    />
+  ),
+
+  details: (
+    <Details summary="Why we ask for your ward number">
+      Your ward number lets us route your application to the office that serves your area, so it is
+      reviewed by the right officer.
+    </Details>
+  ),
+
+  "warning-text": <WarningText>You cannot change your citizenship number after you submit.</WarningText>,
+
+  "phase-banner": (
+    <PhaseBanner phase="Pilot">
+      This is a new service — <Link href="#feedback">give feedback</Link> to help us improve it.
+    </PhaseBanner>
+  ),
+
+  stepper: (
+    <Stepper
+      current={2}
+      steps={[
+        { label: "Personal details", href: "#1" },
+        { label: "Documents", href: "#2" },
+        { label: "Review" },
+        { label: "Payment" },
+      ]}
+    />
+  ),
+
+  "language-switcher": <LanguageSwitcher />,
 };
 
 export function Example({ id }: { id: string }) {

@@ -1,0 +1,49 @@
+/* Select (components/select.md).
+ *
+ * The native <select> is the baseline on every platform — it inherits the OS picker on mobile,
+ * which beats any custom dropdown on a small screen and works with every assistive technology.
+ * Styling touches only the closed control; the option list is never restyled. */
+
+.gov-select {
+  inline-size: 100%;
+  min-block-size: var(--gov-target-min-size);
+  padding-inline: var(--gov-space-3);
+  padding-block: var(--gov-space-3);
+  /* Room for the chevron on the trailing side (logical, so it flips for RTL if ever needed). */
+  padding-inline-end: var(--gov-space-8);
+
+  background: var(--gov-color-background-surface);
+  color: var(--gov-color-text-primary);
+  border: var(--gov-border-width-md) solid var(--gov-color-border-input);
+  border-radius: var(--gov-radius-sm);
+
+  font-size: var(--gov-type-body-font-size);
+  cursor: pointer;
+
+  /* The chevron is a background SVG using currentColor via a data URI — no icon font, no extra
+   * request. appearance:none removes the OS chevron so ours sits consistently. */
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%231F1F1F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--gov-space-3) center;
+}
+
+/* The chevron colour can't read a token from inside a data URI, so restate it per dark surface. */
+[data-mode="dark"] .gov-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23F1F1EF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+
+.gov-select[aria-invalid="true"] {
+  border-color: var(--gov-color-status-error-border);
+}
+
+.gov-select[disabled] {
+  background-color: var(--gov-color-background-secondary);
+  color: var(--gov-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* The disabled first option ("Select your province") reads as an instruction, not a value. */
+.gov-select option[disabled] {
+  color: var(--gov-color-text-placeholder);
+}

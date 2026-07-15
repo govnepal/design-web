@@ -86,6 +86,15 @@ const fontsCss = readFileSync(resolve(assets, "fonts/css/fonts.css"), "utf8").re
 );
 writeFileSync(resolve(dist, "fonts.css"), fontsCss);
 
+// Emblem and flag masters (design-assets/emblems). Shipped as file assets — the emblem is ~40 KB
+// gzipped, far too heavy to inline on every page, so it is served as a cached image (identity
+// media the browser fetches once), never inlined. Consumers place these at their web root or
+// reference @govnepal/css/emblems/*.svg directly.
+cpSync(resolve(assets, "emblems/files"), resolve(dist, "emblems"), {
+  recursive: true,
+  filter: (src) => !src.endsWith(".md") && !src.endsWith(".gitkeep"),
+});
+
 // ---- Hand-written layers, concatenated in cascade order ----------------------------------
 // Order matters: reset → tokens-derived layout → element defaults → components → print last.
 const ORDER = [
@@ -96,9 +105,14 @@ const ORDER = [
   "button.css",
   "link.css",
   "text-input.css",
+  "choice.css",
+  "select.css",
+  "disclosure.css",
   "error-summary.css",
   "alert.css",
   "badge.css",
+  "navigation.css",
+  "identity.css",
   "header.css",
   "print.css",
 ];

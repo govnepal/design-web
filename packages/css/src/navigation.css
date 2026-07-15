@@ -1,0 +1,113 @@
+/* Phase banner (components/phase-banner.md), stepper (components/stepper.md), and language
+ * switcher (components/language-switcher.md) — the standalone navigation pieces. */
+
+/* Phase banner: a single-line band directly below the government header, above content. Plain
+ * text, never colour alone. A thin Simrik-free band using a status tint. */
+.gov-phase-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--gov-space-2);
+  padding-block: var(--gov-space-2);
+  background: var(--gov-color-status-info-background);
+  border-block-end: var(--gov-border-width-sm) solid var(--gov-color-status-info-border);
+}
+
+.gov-phase-banner__tag {
+  font-weight: var(--gov-font-weight-semibold);
+  color: var(--gov-color-status-info-text);
+  text-transform: uppercase;
+  font-size: var(--gov-type-small-font-size);
+  letter-spacing: 0.03em;
+}
+
+/* Stepper: an ordered list of named steps — completed / current / upcoming. */
+.gov-stepper {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gov-space-4);
+  padding: 0;
+}
+
+.gov-stepper__step {
+  display: flex;
+  align-items: center;
+  gap: var(--gov-space-2);
+  color: var(--gov-color-text-secondary);
+}
+
+.gov-stepper__step--complete {
+  color: var(--gov-color-status-success-text);
+}
+
+.gov-stepper__step--current {
+  color: var(--gov-color-text-primary);
+  font-weight: var(--gov-font-weight-semibold);
+}
+
+.gov-stepper__marker {
+  inline-size: 28px;
+  block-size: 28px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--gov-radius-full);
+  border: var(--gov-border-width-md) solid currentColor;
+  font-size: var(--gov-type-small-font-size);
+  font-weight: var(--gov-font-weight-semibold);
+}
+
+.gov-stepper__step--current .gov-stepper__marker {
+  background: var(--gov-color-interactive-selected-indicator);
+  color: var(--gov-color-text-on-action);
+  border-color: var(--gov-color-interactive-selected-indicator);
+}
+
+.gov-stepper__link {
+  color: inherit;
+}
+
+/* Condensed "Step 2 of 5" for mobile — shown instead of the full rail below the breakpoint. */
+.gov-stepper__condensed {
+  display: none;
+  font-weight: var(--gov-font-weight-medium);
+}
+
+@media (max-width: 767px) {
+  .gov-stepper {
+    display: none;
+  }
+  .gov-stepper__condensed {
+    display: block;
+  }
+}
+
+/* Language switcher: a compact text toggle, each language shown by its autonym, current one
+ * distinguished by weight + underline (never colour alone). */
+.gov-language-switcher {
+  display: flex;
+  align-items: center;
+  gap: var(--gov-space-2);
+}
+
+.gov-language-switcher a {
+  min-block-size: var(--gov-target-min-size);
+  display: inline-flex;
+  align-items: center;
+  padding-inline: var(--gov-space-2);
+  text-decoration: none;
+  color: var(--gov-color-link-default);
+}
+
+.gov-language-switcher [aria-current="true"] {
+  color: var(--gov-color-text-primary);
+  font-weight: var(--gov-font-weight-semibold);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.gov-language-switcher__divider {
+  color: var(--gov-color-text-secondary);
+}

@@ -1,0 +1,75 @@
+/* Checkbox and radio (components/checkbox.md, radio.md).
+ *
+ * Both are the native input with a styled indicator, and both follow the §5.2 colour hierarchy:
+ * the checked mark is color.action.primary — if it is interactive, it is blue. The whole row
+ * (input + label) is the hit target, 44px minimum, so a mistap on a phone still lands. */
+
+.gov-choice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gov-space-3);
+  min-block-size: var(--gov-target-min-size);
+  padding-block: var(--gov-space-2);
+  cursor: pointer;
+}
+
+/* The native input is kept (not replaced) so it stays fully accessible; it is visually sized to
+ * the 24px indicator and its focus ring is drawn by the shared focus rule. */
+.gov-choice__input {
+  inline-size: 24px;
+  block-size: 24px;
+  flex-shrink: 0;
+  margin: 0;
+  accent-color: var(--gov-color-action-primary-default);
+  cursor: pointer;
+}
+
+.gov-choice__label {
+  /* Line up the label with the indicator, allowing for the taller Devanagari line. */
+  padding-block-start: 0.1em;
+}
+
+.gov-choice__hint {
+  display: block;
+  color: var(--gov-color-text-secondary);
+  font-size: var(--gov-type-small-font-size);
+  line-height: var(--gov-type-small-line-height);
+}
+
+/* A group of choices — the fieldset carries the question as its legend (components/checkbox.md,
+ * radio.md). Errors mark the group, never one option. */
+.gov-choice-group {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gov-space-2);
+}
+
+.gov-choice-group__legend {
+  padding: 0;
+  font-weight: var(--gov-font-weight-medium);
+  margin-block-end: var(--gov-space-2);
+}
+
+.gov-choice-group--error {
+  /* The whole group gets a lead edge so the error attaches to the question, not a single row. */
+  border-inline-start: var(--gov-border-width-lg) solid var(--gov-color-status-error-border);
+  padding-inline-start: var(--gov-space-4);
+}
+
+.gov-choice-group__error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gov-space-2);
+  color: var(--gov-color-status-error-text);
+  font-weight: var(--gov-font-weight-medium);
+}
+
+/* Kiosk: options render as large pressable rows (§8.1.4) — a bordered card per choice. */
+[data-density="kiosk-counter"] .gov-choice {
+  border: var(--gov-border-width-md) solid var(--gov-color-border-input);
+  border-radius: var(--gov-radius-md);
+  padding: var(--gov-space-4);
+}
