@@ -35,6 +35,30 @@ pnpm test
 `pnpm sync` warns when a ref is not a tag, and each build output records the guidelines version it
 came from. Pin to tags before any external consumer installs these packages.
 
+## Publishing to npm
+
+The three packages publish to npm as `@nepal-gov/tokens`, `@nepal-gov/css`, and `@nepal-gov/ui`,
+so other government projects install them instead of vendoring the design system.
+
+Release is driven by a git tag — the tag is the authoritative record of what shipped, matching the
+convention `design-guidelines` uses for the standard itself:
+
+1. Bump the `version` in the three `packages/*/package.json` (keep them in step) and commit.
+2. Tag it `vX.Y.Z` and push the tag. `.github/workflows/release.yml` checks out the pinned
+   upstream repos, syncs, builds (contrast gate included), tests, and runs `pnpm -r publish`.
+
+`pnpm -r publish` publishes in dependency order and rewrites each `workspace:^` to the real
+version range, so a consumer of `@nepal-gov/ui` gets proper `@nepal-gov/css`/`tokens` deps. Each
+package's `prepack` rebuilds its `dist` first, so what ships always matches source. A dry run:
+
+```
+pnpm sync && pnpm build
+pnpm -r publish --dry-run
+```
+
+`NPM_TOKEN` must be set as a repo secret. Consumers load all three together — `@nepal-gov/css`
+bundles the self-hosted Noto fonts, since loading fonts from a CDN is prohibited (§9.2).
+
 ## Status
 
 | Package | State |

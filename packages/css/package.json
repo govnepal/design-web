@@ -4,6 +4,14 @@
   "description": "Civic Calm — the framework-agnostic stylesheet. Semantic HTML plus .gov-* classes, no JavaScript.",
   "license": "MIT",
   "type": "module",
+  "keywords": ["nepal", "government", "design-system", "civic-calm", "css", "devanagari", "a11y"],
+  "homepage": "https://github.com/govnepal/design-web/tree/main/packages/css#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/govnepal/design-web.git",
+    "directory": "packages/css"
+  },
+  "bugs": "https://github.com/govnepal/design-web/issues",
   "sideEffects": ["*.css"],
   "files": ["dist"],
   "exports": {
@@ -11,12 +19,16 @@
     "./fonts.css": "./dist/fonts.css",
     "./fonts/*": "./dist/fonts/*"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "node build/index.mjs",
+    "prepack": "node build/index.mjs",
     "test": "node --test"
   },
   "dependencies": {
-    "@nepal-gov/tokens": "workspace:*"
+    "@nepal-gov/tokens": "workspace:^"
   },
   "devDependencies": {
     "yaml": "^2.9.0"

@@ -4,6 +4,14 @@
   "description": "Civic Calm design tokens — CSS custom properties generated from design-guidelines, per display mode.",
   "license": "MIT",
   "type": "module",
+  "keywords": ["nepal", "government", "design-system", "design-tokens", "civic-calm", "css-variables", "a11y"],
+  "homepage": "https://github.com/govnepal/design-web/tree/main/packages/tokens#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/govnepal/design-web.git",
+    "directory": "packages/tokens"
+  },
+  "bugs": "https://github.com/govnepal/design-web/issues",
   "sideEffects": [
     "*.css"
   ],
@@ -18,8 +26,12 @@
     "./tokens.css": "./dist/tokens.css",
     "./tokens.json": "./dist/tokens.json"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "node build/index.mjs",
+    "prepack": "node build/index.mjs",
     "test": "node --test"
   },
   "devDependencies": {

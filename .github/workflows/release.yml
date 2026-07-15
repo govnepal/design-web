@@ -1,0 +1,57 @@
+name: Release
+
+# Publishes @nepal-gov/tokens, @nepal-gov/css, and @nepal-gov/ui to npm.
+#
+# Trigger by pushing a version tag (e.g. v0.1.0). The tag is the authoritative record of what was
+# published — the same convention design-guidelines uses for the standard itself (§10.3). Bump the
+# three package versions in the same commit the tag points at.
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # for npm provenance, once the repo is public
+    steps:
+      - uses: actions/checkout@v4
+
+      # The packages are generated FROM the sibling repos; check them out so sync can clone them.
+      # Pin these to the SAME guidelines tag the packages were built against, not a moving branch.
+      - name: Check out design-guidelines
+        uses: actions/checkout@v4
+        with:
+          repository: govnepal/design-guidelines
+          ref: ${{ vars.GUIDELINES_REF || 'main' }}
+          path: ../design-guidelines
+      - name: Check out design-assets
+        uses: actions/checkout@v4
+        with:
+          repository: govnepal/design-assets
+          ref: ${{ vars.ASSETS_REF || 'main' }}
+          path: ../design-assets
+
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm sync
+      - run: pnpm build # includes the §5.2 contrast gate
+      - run: pnpm test
+
+      # `pnpm -r publish` publishes every non-private workspace package in dependency order and
+      # rewrites `workspace:^` to the real version range, so consumers get proper deps. Each
+      # package's `prepack` rebuilds its dist first, guaranteeing what ships matches source.
+      # Add `--provenance` once the repo is public (npm rejects provenance from private repos).
+      - name: Publish to npm
+        run: pnpm -r publish --no-git-checks --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

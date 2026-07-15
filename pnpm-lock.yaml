@@ -15,7 +15,7 @@ importers:
   packages/css:
     dependencies:
       '@nepal-gov/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../tokens
     devDependencies:
       yaml:
@@ -31,10 +31,10 @@ importers:
   packages/ui:
     dependencies:
       '@nepal-gov/css':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../css
       '@nepal-gov/tokens':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../tokens
     devDependencies:
       '@testing-library/dom':

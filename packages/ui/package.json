@@ -4,6 +4,14 @@
   "description": "Civic Calm React components — the behavior layer (ARIA, keyboard, focus) over @nepal-gov/css.",
   "license": "MIT",
   "type": "module",
+  "keywords": ["nepal", "government", "design-system", "civic-calm", "react", "components", "a11y"],
+  "homepage": "https://github.com/govnepal/design-web/tree/main/packages/ui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/govnepal/design-web.git",
+    "directory": "packages/ui"
+  },
+  "bugs": "https://github.com/govnepal/design-web/issues",
   "files": [
     "dist"
   ],
@@ -13,9 +21,13 @@
       "default": "./dist/index.js"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "generate": "node build/generate.mjs",
     "build": "node build/generate.mjs && tsc -p tsconfig.build.json",
+    "prepack": "node build/generate.mjs && tsc -p tsconfig.build.json",
     "typecheck": "node build/generate.mjs && tsc -p tsconfig.build.json --noEmit",
     "test": "node --import ./test/setup.mjs --test"
   },
@@ -24,8 +36,8 @@
     "react-dom": ">=18"
   },
   "dependencies": {
-    "@nepal-gov/css": "workspace:*",
-    "@nepal-gov/tokens": "workspace:*"
+    "@nepal-gov/css": "workspace:^",
+    "@nepal-gov/tokens": "workspace:^"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.1",
