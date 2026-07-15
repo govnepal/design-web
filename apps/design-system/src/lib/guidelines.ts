@@ -121,6 +121,45 @@ export function listChapters(folder: string): Chapter[] {
     .map((f) => getChapter(folder, f.replace(/\.md$/, "")));
 }
 
+// --- Templates ----------------------------------------------------------------------------
+
+export interface TemplateSpec {
+  id: string;
+  name: string;
+  name_ne?: string;
+  category: string;
+  status: string;
+  purpose: string;
+  composedOf?: string[];
+  bodyHtml: string;
+}
+
+export function listTemplateIds(): string[] {
+  return readdirSync(resolve(GUIDELINES, "templates"))
+    .filter((f) => f.endsWith(".md") && f !== "README.md")
+    .map((f) => f.replace(/\.md$/, ""));
+}
+
+export function getTemplate(id: string): TemplateSpec {
+  const { data, body } = parseDoc<Record<string, unknown>>(read(`templates/${id}.md`));
+  return {
+    id: data.id as string,
+    name: data.name as string,
+    name_ne: data.name_ne as string | undefined,
+    category: (data.category as string) ?? "other",
+    status: (data.status as string) ?? "draft",
+    purpose: (data.purpose as string) ?? "",
+    composedOf: data.composed_of as string[] | undefined,
+    bodyHtml: renderMarkdown(body),
+  };
+}
+
+export function allTemplates(): TemplateSpec[] {
+  return listTemplateIds()
+    .map(getTemplate)
+    .sort((a, b) => a.category.localeCompare(b.category) || a.name.localeCompare(b.name));
+}
+
 // --- Manifest / principles ----------------------------------------------------------------
 
 export interface Principle {

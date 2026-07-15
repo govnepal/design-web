@@ -1,4 +1,4 @@
-import { allComponents, guidelinesVersion, listChapters, principles } from "@/lib/guidelines";
+import { allComponents, allTemplates, guidelinesVersion, listChapters, principles } from "@/lib/guidelines";
 
 // Served at /llms.txt for AI tools (AGENTS.md: "serves /llms.txt and every page as clean markdown").
 // A plain-text map of the system: what it is, the principles, the foundations, and every component
@@ -8,6 +8,7 @@ export const dynamic = "force-static";
 export function GET() {
   const v = guidelinesVersion();
   const components = allComponents();
+  const templates = allTemplates();
   const foundations = listChapters("05-foundations");
 
   const lines = [
@@ -27,6 +28,9 @@ export function GET() {
     ...components.map(
       (c) => `- /components/${c.id} — ${c.name} [${c.category}, ${c.status}]${c.complete ? `: ${c.purpose}` : " (spec in progress)"}`,
     ),
+    "",
+    "## Templates (whole-page archetypes)",
+    ...templates.map((t) => `- /templates/${t.id} — ${t.name} [${t.category}]: ${t.purpose}`),
     "",
   ];
 

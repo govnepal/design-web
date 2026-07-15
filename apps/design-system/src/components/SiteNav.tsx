@@ -15,6 +15,7 @@ const LINKS = [
   { href: "/", label: "Home" },
   { href: "/foundations", label: "Foundations" },
   { href: "/components", label: "Components" },
+  { href: "/templates", label: "Templates" },
 ];
 
 export function SiteNav() {
