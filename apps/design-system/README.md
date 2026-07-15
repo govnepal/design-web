@@ -44,6 +44,25 @@ unnecessary client components so the shared runtime stays the only JS they pay f
 - **Foundations** (`/foundations`) — the 05-foundations chapters rendered from markdown.
 - **`/llms.txt`** — a plain-text map of the system for AI tools.
 
+## Deploying to Vercel
+
+Live: **https://civic-calm-achyut2s-projects.vercel.app** (Vercel project `civic-calm`).
+
+The build reads `design-guidelines`, which is a **private** repo — so Vercel can't build the site
+itself (it can't clone the private source). Instead we build locally, where `.guidelines` is synced,
+and deploy the pre-built static export:
+
+```
+pnpm sync                                   # needs the sibling repos checked out locally
+pnpm --filter @govnepal/design-system-site build
+vercel deploy apps/design-system/out --prod --yes
+```
+
+`output: "export"` makes the whole site static HTML, so Vercel just serves `out/` — no server-side
+build, no private-repo access needed on their end. Deployment Protection is disabled so the site is
+public. (If `design-guidelines` is ever made public, this can switch to a normal Git-connected
+Vercel build with an inline clone step, the way `design-guidelines`' own deploy works.)
+
 ## Rendering guideline content
 
 `src/lib/guidelines.ts` reads the synced `.guidelines/` copy at build time — the docs site RENDERS
