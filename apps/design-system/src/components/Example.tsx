@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import {
   Container,
   Stack,
@@ -20,8 +20,73 @@ import {
   PhaseBanner,
   Stepper,
   LanguageSwitcher,
+  SkipLink,
+  BackLink,
+  Breadcrumb,
+  Card,
+  IconButton,
+  Toggle,
+  Textarea,
+  Tag,
+  Footer,
+  Tabs,
+  Pagination,
+  Modal,
+  ConfirmationDialog,
+  ToastProvider,
+  useToast,
+  SummaryList,
+  CharacterCount,
 } from "@govnepal/ui";
 import { ModePanel } from "./ModePanel";
+
+// --- Small stateful example wrappers for the interactive components -----------------------
+function ToggleExample() {
+  const [on, setOn] = useState(true);
+  return <Toggle label="Email notifications" checked={on} onChange={setOn} stateLabels={{ on: "On", off: "Off" }} />;
+}
+function ModalExample() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button type="button" onClick={() => setOpen(true)}>Open modal</Button>
+      <Modal open={open} onClose={() => setOpen(false)} title="Change your address"
+        actions={<><Button variant="secondary" type="button" onClick={() => setOpen(false)}>Cancel</Button><Button type="button" onClick={() => setOpen(false)}>Save</Button></>}>
+        A short, self-contained sub-task, with focus trapped until you close it.
+      </Modal>
+    </>
+  );
+}
+function ConfirmExample() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button variant="destructive" type="button" onClick={() => setOpen(true)}>Delete application</Button>
+      <ConfirmationDialog open={open} destructive title="Delete this application?" confirmLabel="Delete application"
+        onConfirm={() => setOpen(false)} onCancel={() => setOpen(false)}>
+        This cannot be undone.
+      </ConfirmationDialog>
+    </>
+  );
+}
+function ToastTrigger() {
+  const { toast } = useToast();
+  return <Button type="button" onClick={() => toast("Draft saved")}>Save draft</Button>;
+}
+function ToastExample() {
+  return <ToastProvider><ToastTrigger /></ToastProvider>;
+}
+function CharacterCountExample() {
+  const [value, setValue] = useState("");
+  return (
+    <div>
+      <Textarea id="ex-cc" label="Describe the problem" value={value} onChange={(e) => setValue(e.target.value)} maxLength={200} />
+      <CharacterCount current={value.length} max={200} />
+    </div>
+  );
+}
+
+// `h` for the wrappers above (this file is .tsx but the wrappers use it once).
 
 /**
  * A live, mode-previewable example per component, keyed by spec id. The docs site pairs each
@@ -186,6 +251,111 @@ const EXAMPLES: Record<string, ReactNode> = {
   ),
 
   "language-switcher": <LanguageSwitcher />,
+
+  "skip-link": (
+    <p className="gov-text-secondary">
+      A skip link is visually hidden until focused — press Tab on a page and it appears first,
+      before the header. <SkipLink />
+    </p>
+  ),
+
+  "back-link": <BackLink href="#previous">Back</BackLink>,
+
+  breadcrumb: (
+    <Breadcrumb
+      items={[
+        { label: "Home", href: "#" },
+        { label: "Services", href: "#" },
+        { label: "Citizenship", href: "#" },
+        { label: "Apply" },
+      ]}
+    />
+  ),
+
+  card: (
+    <div className="site-grid">
+      <Card>
+        <h3 style={{ margin: 0 }}>Citizenship certificate</h3>
+        <p className="gov-text-secondary">Apply for a new certificate or a copy.</p>
+        <Link href="#">Start now</Link>
+      </Card>
+      <Card interactive href="#">
+        <h3 style={{ margin: 0 }}>Track an application</h3>
+        <p className="gov-text-secondary">The whole card is one link.</p>
+      </Card>
+    </div>
+  ),
+
+  "icon-button": (
+    <div className="gov-cluster">
+      <IconButton label="Close" icon={<span aria-hidden="true">✕</span>} />
+      <IconButton label="Edit" icon={<span aria-hidden="true">✎</span>} />
+      <IconButton label="Clear search" variant="ghost" icon={<span aria-hidden="true">⌫</span>} />
+    </div>
+  ),
+
+  toggle: <ToggleExample />,
+
+  textarea: (
+    <Textarea
+      id="ex-remarks"
+      label="Describe the problem"
+      hint="Tell us what went wrong so we can help."
+    />
+  ),
+
+  tag: (
+    <div className="gov-cluster">
+      <Tag>Citizenship</Tag>
+      <Tag>PDF</Tag>
+      <Tag>Bagmati</Tag>
+    </div>
+  ),
+
+  footer: (
+    <Footer
+      officeNe="गृह मन्त्रालय"
+      officeEn="Ministry of Home Affairs"
+      phone="+977 1 4211200"
+      address="Singha Durbar, Kathmandu"
+      copyright="© Government of Nepal"
+      links={[
+        { label: "Accessibility statement", href: "#" },
+        { label: "Report a problem", href: "#" },
+        { label: "Privacy", href: "#" },
+      ]}
+    />
+  ),
+
+  tabs: (
+    <Tabs
+      tabs={[
+        { id: "details", label: "Details", content: <p>The applicant's personal details.</p> },
+        { id: "documents", label: "Documents", content: <p>Uploaded documents.</p> },
+        { id: "history", label: "History", content: <p>The application's status history.</p> },
+      ]}
+    />
+  ),
+
+  pagination: <Pagination page={2} totalPages={15} hrefFor={(p) => `#page-${p}`} />,
+
+  toast: <ToastExample />,
+
+  modal: <ModalExample />,
+
+  "confirmation-dialog": <ConfirmExample />,
+
+  "summary-list": (
+    <SummaryList
+      rows={[
+        { key: "Full name", value: "Sita Sharma", action: <Link href="#">Change name</Link> },
+        { key: "Citizenship number", value: "12-01-76-12345", action: <Link href="#">Change citizenship number</Link> },
+        { key: "Province", value: "Bagmati", action: <Link href="#">Change province</Link> },
+      ]}
+    />
+  ),
+
+  "character-count": <CharacterCountExample />,
 };
 
 export function Example({ id }: { id: string }) {

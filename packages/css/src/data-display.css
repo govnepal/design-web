@@ -1,0 +1,51 @@
+/* Tag and summary list (components/tag.md, summary-list.md). */
+
+/* Tag — a neutral categorical label, NEVER a status colour (that belongs to badge). */
+.gov-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gov-space-1);
+  padding-inline: var(--gov-space-2);
+  padding-block: var(--gov-space-1);
+  border-radius: var(--gov-radius-full);
+  background: var(--gov-color-background-secondary);
+  color: var(--gov-color-text-secondary);
+  border: var(--gov-border-width-sm) solid var(--gov-color-border-default);
+  font-size: var(--gov-type-small-font-size);
+  font-weight: var(--gov-font-weight-medium);
+  white-space: nowrap;
+}
+
+/* Summary list — review-your-answers rows (key / value / change). */
+.gov-summary-list {
+  margin: 0;
+}
+
+.gov-summary-list__row {
+  display: grid;
+  gap: var(--gov-space-2) var(--gov-space-4);
+  grid-template-columns: 1fr;
+  padding-block: var(--gov-space-3);
+  border-block-end: var(--gov-border-width-sm) solid var(--gov-color-border-default);
+  break-inside: avoid;
+}
+
+@media (min-width: 640px) {
+  .gov-summary-list__row {
+    grid-template-columns: 1fr 2fr auto;
+    align-items: baseline;
+  }
+}
+
+.gov-summary-list__key {
+  font-weight: var(--gov-font-weight-medium);
+  margin: 0;
+}
+
+.gov-summary-list__value {
+  margin: 0;
+}
+
+.gov-summary-list__action {
+  justify-self: start;
+}

@@ -33,4 +33,26 @@ export { LanguageSwitcher } from "./LanguageSwitcher.js";
 export { Emblem, Flag } from "./Emblem.js";
 export { Header } from "./Header.js";
 
+// Navigation
+export { SkipLink } from "./SkipLink.js";
+export { BackLink } from "./BackLink.js";
+export { Breadcrumb, type Crumb } from "./Breadcrumb.js";
+export { Pagination } from "./Pagination.js";
+export { Tabs, type TabItem } from "./Tabs.js";
+export { Footer } from "./Footer.js";
+
+// Core / overlays
+export { Card } from "./Card.js";
+export { IconButton } from "./IconButton.js";
+export { Modal } from "./Modal.js";
+export { ConfirmationDialog } from "./ConfirmationDialog.js";
+export { ToastProvider, useToast } from "./Toast.js";
+
+// Forms / data
+export { Toggle } from "./Toggle.js";
+export { Textarea } from "./Textarea.js";
+export { CharacterCount } from "./CharacterCount.js";
+export { SummaryList, type SummaryRow } from "./SummaryList.js";
+export { Tag } from "./Tag.js";
+
 export { STATUS_TAXONOMY, type StatusId, type StatusEntry, type BadgeVariant } from "./generated/statusTaxonomy.js";

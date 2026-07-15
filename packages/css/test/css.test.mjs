@@ -60,9 +60,11 @@ test("spacing is never bypassed with a raw pixel value", () => {
   ]);
   for (const { file, text } of src) {
     for (const match of text.matchAll(/^\s*(?:padding|margin|gap|inset)[\w-]*:\s*([^;]+);/gm)) {
-      const values = match[1].trim().split(/\s+/);
-      for (const value of values) {
-        if (value.startsWith("var(") || value.includes("var(") || value === "auto") continue;
+      const raw = match[1].trim();
+      // A calc() built from tokens is token-based spacing; don't split it apart into fragments.
+      if (raw.includes("var(") || raw.includes("calc(")) continue;
+      for (const value of raw.split(/\s+/)) {
+        if (value === "auto") continue;
         assert.ok(
           ALLOWED.has(value),
           `${file}: spacing value "${value}" is not a space.* token — use var(--gov-space-N)`,

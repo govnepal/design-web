@@ -19,6 +19,15 @@ import {
   Stepper,
   Emblem,
   Flag,
+  Tabs,
+  Modal,
+  ConfirmationDialog,
+  Toggle,
+  IconButton,
+  Card,
+  Breadcrumb,
+  Pagination,
+  Textarea,
 } from "../dist/index.js";
 
 afterEach(cleanup);
@@ -260,4 +269,124 @@ test("Emblem and Flag are img of the verified masters, named the institution not
 
   rerender(h(Flag, {}));
   assert.match(screen.getByRole("img").getAttribute("src"), /flag-of-nepal\.svg/);
+});
+
+test("Tabs implements the ARIA pattern: tablist/tab/tabpanel, roving tabindex, arrow keys", () => {
+  render(
+    withTheme(
+      h(Tabs, {
+        tabs: [
+          { id: "a", label: "Details", content: "Detail content" },
+          { id: "b", label: "Documents", content: "Doc content" },
+        ],
+      }),
+    ),
+  );
+  const tabs = screen.getAllByRole("tab");
+  assert.equal(tabs.length, 2);
+  // Roving tabindex: active tab is 0, the other -1.
+  assert.equal(tabs[0].getAttribute("tabindex"), "0");
+  assert.equal(tabs[1].getAttribute("tabindex"), "-1");
+  assert.equal(tabs[0].getAttribute("aria-selected"), "true");
+  // ArrowRight moves selection to the next tab.
+  fireEvent.keyDown(tabs[0], { key: "ArrowRight" });
+  assert.equal(screen.getAllByRole("tab")[1].getAttribute("aria-selected"), "true");
+});
+
+test("Modal moves focus in, returns it on close, and closes on Escape", () => {
+  const trigger = document.createElement("button");
+  document.body.appendChild(trigger);
+  trigger.focus();
+
+  let open = true;
+  const onClose = () => {
+    open = false;
+  };
+  const { rerender } = render(
+    withTheme(h(Modal, { open: true, onClose, title: "Confirm", actions: h("button", {}, "OK") }, "Body")),
+  );
+  const dialog = screen.getByRole("dialog");
+  assert.equal(dialog.getAttribute("aria-modal"), "true");
+  // Focus moved into the dialog (to the first focusable — the OK button).
+  assert.ok(dialog.contains(document.activeElement));
+  // Escape triggers close.
+  fireEvent.keyDown(document, { key: "Escape" });
+  assert.equal(open, false);
+  rerender(withTheme(h(Modal, { open: false, onClose, title: "Confirm" }, "Body")));
+  // Focus returns to the trigger.
+  assert.equal(document.activeElement, trigger);
+  trigger.remove();
+});
+
+test("ConfirmationDialog is an alertdialog and a destructive one won't dismiss on scrim click", () => {
+  let confirmed = false;
+  let cancelled = false;
+  render(
+    withTheme(
+      h(ConfirmationDialog, {
+        open: true,
+        destructive: true,
+        title: "Reject this application?",
+        confirmLabel: "Reject application",
+        onConfirm: () => (confirmed = true),
+        onCancel: () => (cancelled = true),
+      }, "This cannot be undone."),
+    ),
+  );
+  assert.ok(screen.getByRole("alertdialog"));
+  // The confirm button repeats the specific verb + object.
+  assert.ok(screen.getByRole("button", { name: "Reject application" }));
+  // Scrim click must NOT dismiss a destructive confirmation.
+  fireEvent.click(document.querySelector(".gov-modal__scrim"));
+  assert.equal(cancelled, false, "destructive confirmation must not dismiss on scrim click");
+});
+
+test("Toggle is a switch with aria-checked and flips on click", () => {
+  let checked = false;
+  const { rerender } = render(
+    withTheme(h(Toggle, { label: "Email notifications", checked: false, onChange: (v) => (checked = v) })),
+  );
+  const sw = screen.getByRole("switch", { name: "Email notifications" });
+  assert.equal(sw.getAttribute("aria-checked"), "false");
+  fireEvent.click(sw);
+  assert.equal(checked, true);
+  rerender(withTheme(h(Toggle, { label: "Email notifications", checked: true, onChange: () => {} })));
+  assert.equal(screen.getByRole("switch").getAttribute("aria-checked"), "true");
+});
+
+test("IconButton requires and exposes an accessible name", () => {
+  render(withTheme(h(IconButton, { label: "Close", icon: h("span", {}, "x") })));
+  const button = screen.getByRole("button", { name: "Close" });
+  assert.equal(button.tagName, "BUTTON");
+});
+
+test("interactive Card is a single link, never nested interactive content", () => {
+  render(withTheme(h(Card, { interactive: true, href: "/x" }, "Whole card is one target")));
+  const links = screen.getAllByRole("link");
+  assert.equal(links.length, 1);
+  assert.equal(links[0].getAttribute("href"), "/x");
+});
+
+test("Breadcrumb marks the current page and does not link it", () => {
+  render(
+    withTheme(
+      h(Breadcrumb, { items: [{ label: "Home", href: "/" }, { label: "Services", href: "/s" }, { label: "Apply" }] }),
+    ),
+  );
+  const current = document.querySelector('[aria-current="page"]');
+  assert.match(current.textContent, /Apply/);
+  assert.equal(current.tagName, "SPAN", "the current crumb is not a link");
+});
+
+test("Pagination disables Previous on the first page", () => {
+  render(withTheme(h(Pagination, { page: 1, totalPages: 5, onNavigate: () => {} }), { language: "en" }));
+  const prev = screen.getByText("Previous");
+  assert.equal(prev.getAttribute("aria-disabled"), "true");
+});
+
+test("Textarea binds label and marks invalid on error", () => {
+  render(withTheme(h(Textarea, { id: "remarks", label: "Describe the problem", error: "Enter a description" })));
+  const area = screen.getByLabelText("Describe the problem");
+  assert.equal(area.tagName, "TEXTAREA");
+  assert.equal(area.getAttribute("aria-invalid"), "true");
 });
