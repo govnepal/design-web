@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { guidelines } from "@nepal-gov/tokens";
+import { guidelines } from "@govnepal/tokens";
 import { principles } from "@/lib/guidelines";
 
 // A Server Component: it reads the principles from the synced guidelines at build time and ships

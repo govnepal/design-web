@@ -29,7 +29,7 @@ test("every var(--gov-*) reference resolves to a declared custom property", () =
   //
   // Declarations come from BOTH stylesheets, because that is the actual contract a consumer
   // signs up to: civic-calm.css is meaningless without tokens.css loaded alongside it. This test
-  // is therefore also the guard against @nepal-gov/tokens renaming or dropping a token that this
+  // is therefore also the guard against @govnepal/tokens renaming or dropping a token that this
   // package still consumes — a cross-package break that nothing else would catch.
   const tokensCss = readFileSync(
     resolve(packageDir, "../tokens/dist/tokens.css"),

@@ -44,7 +44,7 @@ export function emitCss({ version, commit, light, modes, densities }) {
 
   out.push(
     `/*!`,
-    ` * Civic Calm design tokens — @nepal-gov/tokens`,
+    ` * Civic Calm design tokens — @govnepal/tokens`,
     ` * GENERATED from design-guidelines ${version} (${commit.slice(0, 8)}). Do not edit by hand:`,
     ` * change the tokens in design-guidelines and re-run the build.`,
     ` *`,

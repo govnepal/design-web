@@ -1,24 +1,24 @@
-# @nepal-gov/css
+# @govnepal/css
 
 The framework-agnostic visual layer. Semantic HTML plus `.gov-*` classes, no JavaScript. A
 plain-HTML ministry site or a CMS gets the full Civic Calm interface without adopting a
 component library — the four-step quick start in §10.2, minus the framework.
 
 ```
-pnpm --filter @nepal-gov/css build     # regenerate dist/ from tokens + .guidelines + .assets
-pnpm --filter @nepal-gov/css test
+pnpm --filter @govnepal/css build     # regenerate dist/ from tokens + .guidelines + .assets
+pnpm --filter @govnepal/css test
 ```
 
 ## Usage
 
 ```html
-<link rel="stylesheet" href="@nepal-gov/tokens/tokens.css" />
-<link rel="stylesheet" href="@nepal-gov/css/fonts.css" />
-<link rel="stylesheet" href="@nepal-gov/css/civic-calm.css" />
+<link rel="stylesheet" href="@govnepal/tokens/tokens.css" />
+<link rel="stylesheet" href="@govnepal/css/fonts.css" />
+<link rel="stylesheet" href="@govnepal/css/civic-calm.css" />
 ```
 
 `civic-calm.css` is meaningless without `tokens.css` loaded alongside it — every rule resolves a
-`var(--gov-*)` the token package declares. A test enforces that contract, so if `@nepal-gov/tokens`
+`var(--gov-*)` the token package declares. A test enforces that contract, so if `@govnepal/tokens`
 ever renames or drops a token this package still consumes, the build fails here rather than
 rendering an element unstyled in production.
 
@@ -28,7 +28,7 @@ for making a heading look like a heading.
 
 ## This package holds ALL the visual decisions
 
-That is the deliberate split with `@nepal-gov/ui`:
+That is the deliberate split with `@govnepal/ui`:
 
 - **`css` owns every visual decision** — colour, spacing, the type scale, all six display modes,
   the print stylesheet, density. The whole visual truth of Civic Calm is here.

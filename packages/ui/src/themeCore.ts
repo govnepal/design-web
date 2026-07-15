@@ -48,7 +48,7 @@ export function loadPersistedTheme(): Partial<ThemeState> {
 
 /**
  * Apply the theme to a root element as data-attributes. This is the entire coupling between state
- * and the token layer: @nepal-gov/tokens' CSS selectors ([data-mode], [data-large-text], …) do the
+ * and the token layer: @govnepal/tokens' CSS selectors ([data-mode], [data-large-text], …) do the
  * rest. Attributes are removed rather than set to a falsy value so the OS-default selectors
  * (:root:not([data-mode])) engage when the user has made no explicit choice.
  */

@@ -1,9 +1,9 @@
 /**
- * @nepal-gov/ui — the Civic Calm React behavior layer.
+ * @govnepal/ui — the Civic Calm React behavior layer.
  *
- * These components add ARIA, keyboard handling, and focus management on top of @nepal-gov/css.
+ * These components add ARIA, keyboard handling, and focus management on top of @govnepal/css.
  * They contain no styling of their own: every visual decision lives in the stylesheet, so a
- * consumer must load @nepal-gov/css and @nepal-gov/tokens alongside this package. The split is
+ * consumer must load @govnepal/css and @govnepal/tokens alongside this package. The split is
  * deliberate — a future Vue or Web Component port re-implements behavior only, never design.
  */
 

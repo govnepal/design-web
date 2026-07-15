@@ -1,5 +1,5 @@
 {
-  "name": "@nepal-gov/design-system-site",
+  "name": "@govnepal/design-system-site",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -10,9 +10,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@nepal-gov/css": "workspace:^",
-    "@nepal-gov/tokens": "workspace:^",
-    "@nepal-gov/ui": "workspace:^",
+    "@govnepal/css": "workspace:^",
+    "@govnepal/tokens": "workspace:^",
+    "@govnepal/ui": "workspace:^",
     "marked": "^18.0.6",
     "next": "^16.2.10",
     "react": "^19.2.0",

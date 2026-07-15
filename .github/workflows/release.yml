@@ -1,6 +1,6 @@
 name: Release
 
-# Publishes @nepal-gov/tokens, @nepal-gov/css, and @nepal-gov/ui to npm.
+# Publishes @govnepal/tokens, @govnepal/css, and @govnepal/ui to npm.
 #
 # Trigger by pushing a version tag (e.g. v0.1.0). The tag is the authoritative record of what was
 # published — the same convention design-guidelines uses for the standard itself (§10.3). Bump the

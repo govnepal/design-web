@@ -20,8 +20,8 @@ export default function PreviewPage() {
           <h1>Live preview</h1>
           <p className="site-hero__lead">
             All ten built components composed into one realistic citizenship service — the real{" "}
-            <code className="gov-reference">@nepal-gov/ui</code> components, styled by{" "}
-            <code className="gov-reference">@nepal-gov/css</code>. Use the controls to walk the whole
+            <code className="gov-reference">@govnepal/ui</code> components, styled by{" "}
+            <code className="gov-reference">@govnepal/css</code>. Use the controls to walk the whole
             service through each display mode and either language, the same check an accessibility
             reviewer runs before a release.
           </p>

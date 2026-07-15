@@ -15,7 +15,7 @@ export function GET() {
     "",
     `Unofficial, community-led. Built from design-guidelines ${v.version} (${v.status}).`,
     "Accessibility target: WCAG 2.2 AA. Everything bilingual (Nepali-first, Article 7).",
-    "Packages: @nepal-gov/tokens (design tokens, 6 display modes), @nepal-gov/css (framework-agnostic stylesheet), @nepal-gov/ui (React components).",
+    "Packages: @govnepal/tokens (design tokens, 6 display modes), @govnepal/css (framework-agnostic stylesheet), @govnepal/ui (React components).",
     "",
     "## Principles",
     ...principles.map((p) => `- ${p.title}: ${p.meaning}`),

@@ -1,5 +1,5 @@
 {
-  "name": "@nepal-gov/tokens",
+  "name": "@govnepal/tokens",
   "version": "0.1.0",
   "description": "Civic Calm design tokens — CSS custom properties generated from design-guidelines, per display mode.",
   "license": "MIT",

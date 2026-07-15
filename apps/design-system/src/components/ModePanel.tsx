@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { ThemeProvider, type ColorMode, type Language } from "@nepal-gov/ui";
+import { ThemeProvider, type ColorMode, type Language } from "@govnepal/ui";
 
 /**
  * The mode-preview panel (apps/design-system/README): render a live example in any display mode —

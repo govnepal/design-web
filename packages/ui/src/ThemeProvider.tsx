@@ -27,7 +27,7 @@ export type { ColorMode, Language, Calendar, Density, ThemeState } from "./theme
  * The theme provider — the single place where rendering context is set (§10.2, normative).
  *
  * It controls display mode, language, calendar, and density, applies them as root attributes that
- * @nepal-gov/tokens keys off, and persists the user's choices. Exactly one provider is expected at
+ * @govnepal/tokens keys off, and persists the user's choices. Exactly one provider is expected at
  * the application root; a nested provider may override the DISPLAY MODE for a subtree (a mode
  * preview) but nothing else — language never changes mid-page except through a visible switcher.
  */

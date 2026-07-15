@@ -5,9 +5,9 @@ asset depot, UI packages, checker tools, and AI layer.
 
 ## Structure
 
-- `packages/tokens` — `@nepal-gov/tokens`: CSS variables generated from design-guidelines, per display mode
-- `packages/css` — `@nepal-gov/css`: framework-agnostic stylesheet
-- `packages/ui` — `@nepal-gov/ui`: Civic Calm component library
+- `packages/tokens` — `@govnepal/tokens`: CSS variables generated from design-guidelines, per display mode
+- `packages/css` — `@govnepal/css`: framework-agnostic stylesheet
+- `packages/ui` — `@govnepal/ui`: Civic Calm component library
 - `packages/checker` — compliance checker engines (accessibility/design/AI checks, CLI, API, GitHub Action)
 - `packages/ai` — AI layer: MCP server, Claude Skill, AGENTS.md init, llms.txt generators
 - `apps/design-system` — public docs site (renders design-guidelines content, serves /llms.txt)
@@ -37,7 +37,7 @@ came from. Pin to tags before any external consumer installs these packages.
 
 ## Publishing to npm
 
-The three packages publish to npm as `@nepal-gov/tokens`, `@nepal-gov/css`, and `@nepal-gov/ui`,
+The three packages publish to npm as `@govnepal/tokens`, `@govnepal/css`, and `@govnepal/ui`,
 so other government projects install them instead of vendoring the design system.
 
 Release is driven by a git tag — the tag is the authoritative record of what shipped, matching the
@@ -48,7 +48,7 @@ convention `design-guidelines` uses for the standard itself:
    upstream repos, syncs, builds (contrast gate included), tests, and runs `pnpm -r publish`.
 
 `pnpm -r publish` publishes in dependency order and rewrites each `workspace:^` to the real
-version range, so a consumer of `@nepal-gov/ui` gets proper `@nepal-gov/css`/`tokens` deps. Each
+version range, so a consumer of `@govnepal/ui` gets proper `@govnepal/css`/`tokens` deps. Each
 package's `prepack` rebuilds its `dist` first, so what ships always matches source. A dry run:
 
 ```
@@ -56,16 +56,16 @@ pnpm sync && pnpm build
 pnpm -r publish --dry-run
 ```
 
-`NPM_TOKEN` must be set as a repo secret. Consumers load all three together — `@nepal-gov/css`
+`NPM_TOKEN` must be set as a repo secret. Consumers load all three together — `@govnepal/css`
 bundles the self-hosted Noto fonts, since loading fonts from a CDN is prohibited (§9.2).
 
 ## Status
 
 | Package | State |
 |---|---|
-| `@nepal-gov/tokens` | Built. 121 semantic tokens × 6 modes; the §5.2 contrast gate fails the build on a bad mode. |
-| `@nepal-gov/css` | Built. Framework-agnostic stylesheet, self-hosted Noto, print rules, density; ~12 KB gzipped. |
-| `@nepal-gov/ui` | Built. Ten components + the §10.2 theme provider; behavior-only over the CSS layer. |
+| `@govnepal/tokens` | Built. 121 semantic tokens × 6 modes; the §5.2 contrast gate fails the build on a bad mode. |
+| `@govnepal/css` | Built. Framework-agnostic stylesheet, self-hosted Noto, print rules, density; ~12 KB gzipped. |
+| `@govnepal/ui` | Built. Ten components + the §10.2 theme provider; behavior-only over the CSS layer. |
 | `packages/checker`, `packages/ai` | Not started. |
 | `apps/*` | Not started — to be built as the first consumers of the packages above. |
 

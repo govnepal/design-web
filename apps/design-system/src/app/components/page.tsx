@@ -25,7 +25,7 @@ export default function ComponentsIndexPage() {
           <h1>Components</h1>
           <p className="site-hero__lead">
             {components.length} component specifications from the guidelines. {built} are built in{" "}
-            <code className="gov-reference">@nepal-gov/ui</code> and shown live; the rest are
+            <code className="gov-reference">@govnepal/ui</code> and shown live; the rest are
             specified and awaiting implementation.
           </p>
           <p>

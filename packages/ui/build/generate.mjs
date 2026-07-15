@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Generate the data modules @nepal-gov/ui embeds from design-guidelines, so the components carry
+ * Generate the data modules @govnepal/ui embeds from design-guidelines, so the components carry
  * no hand-typed policy. Runs before tsc.
  *
  * Right now that is just the status taxonomy (data/status-taxonomy.yaml): the Badge renders its
@@ -51,4 +51,4 @@ ${entries}
 `;
 
 writeFileSync(resolve(genDir, "statusTaxonomy.ts"), out);
-console.log(`@nepal-gov/ui: generated statusTaxonomy.ts (${statuses.length} statuses) from guidelines ${version}.`);
+console.log(`@govnepal/ui: generated statusTaxonomy.ts (${statuses.length} statuses) from guidelines ${version}.`);

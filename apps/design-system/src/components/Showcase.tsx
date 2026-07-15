@@ -1,6 +1,6 @@
 "use client";
 
-import { Header, Container, Stack, Button, Link, TextInput, Alert, Badge, ErrorSummary } from "@nepal-gov/ui";
+import { Header, Container, Stack, Button, Link, TextInput, Alert, Badge, ErrorSummary } from "@govnepal/ui";
 
 /**
  * A single realistic mini-service that exercises all ten components at once: the government header,

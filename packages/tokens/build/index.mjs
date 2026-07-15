@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Build @nepal-gov/tokens from design-guidelines.
+ * Build @govnepal/tokens from design-guidelines.
  *
  * Outputs (all generated — never hand-edited):
  *   dist/tokens.css   the CSS custom properties every service consumes
@@ -110,6 +110,6 @@ writeFileSync(
 );
 
 console.log(
-  `@nepal-gov/tokens built: ${Object.keys(light).length} semantic tokens × ${Object.keys(modes).length} modes ` +
+  `@govnepal/tokens built: ${Object.keys(light).length} semantic tokens × ${Object.keys(modes).length} modes ` +
     `from design-guidelines ${guidelinesVersion} (${status}) @ ${commit.slice(0, 8)}.`,
 );

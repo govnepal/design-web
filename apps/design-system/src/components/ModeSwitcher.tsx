@@ -1,6 +1,6 @@
 "use client";
 
-import { ThemeProvider, useTheme, type ColorMode } from "@nepal-gov/ui";
+import { ThemeProvider, useTheme, type ColorMode } from "@govnepal/ui";
 
 /**
  * The whole-page display-mode switcher for the site header (distinct from the per-example mode

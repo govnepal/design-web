@@ -1,21 +1,21 @@
-# @nepal-gov/ui
+# @govnepal/ui
 
 The Civic Calm React components — the **behavior** layer. Every component maps to its
 design-guidelines spec id and adds the ARIA, keyboard handling, and focus management that spec
-requires. It contains **no styling of its own**: every visual decision lives in `@nepal-gov/css`.
+requires. It contains **no styling of its own**: every visual decision lives in `@govnepal/css`.
 
 ```
-pnpm --filter @nepal-gov/ui build     # generates the taxonomy module, then tsc
-pnpm --filter @nepal-gov/ui test      # behavior tests against the built output, in jsdom
+pnpm --filter @govnepal/ui build     # generates the taxonomy module, then tsc
+pnpm --filter @govnepal/ui test      # behavior tests against the built output, in jsdom
 ```
 
 ## Setup
 
 ```tsx
-import "@nepal-gov/tokens/tokens.css";
-import "@nepal-gov/css/fonts.css";
-import "@nepal-gov/css/civic-calm.css";
-import { ThemeProvider, Header, Button } from "@nepal-gov/ui";
+import "@govnepal/tokens/tokens.css";
+import "@govnepal/css/fonts.css";
+import "@govnepal/css/civic-calm.css";
+import { ThemeProvider, Header, Button } from "@govnepal/ui";
 
 export function App() {
   return (
@@ -40,9 +40,9 @@ provider across the boundary.
 
 ## Why behavior-only
 
-- **`@nepal-gov/css`** owns colour, spacing, the type scale, all six display modes, print, density
+- **`@govnepal/css`** owns colour, spacing, the type scale, all six display modes, print, density
   — the whole visual truth.
-- **`@nepal-gov/ui`** owns ARIA, keyboard, focus, and state.
+- **`@govnepal/ui`** owns ARIA, keyboard, focus, and state.
 
 So a Vue or Web Component port later re-implements behavior only, never a design decision — and a
 plain-HTML site can already use the CSS classes without any of this. What the React layer buys you

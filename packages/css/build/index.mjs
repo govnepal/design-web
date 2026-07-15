@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Build @nepal-gov/css.
+ * Build @govnepal/css.
  *
  * Two layers, deliberately separated:
  *
@@ -111,11 +111,11 @@ if (missing.length) throw new Error(`src/ is missing: ${missing.join(", ")}`);
 if (unlisted.length) throw new Error(`src/ has files not in the cascade order: ${unlisted.join(", ")}`);
 
 const banner = `/*!
- * Civic Calm — @nepal-gov/css
+ * Civic Calm — @govnepal/css
  * The framework-agnostic visual layer. Semantic HTML plus .gov-* classes; no JavaScript.
  * Built against design-guidelines ${version} (${commit.slice(0, 8)}).
  *
- * This stylesheet holds ALL of Civic Calm's visual decisions. @nepal-gov/ui adds only behavior
+ * This stylesheet holds ALL of Civic Calm's visual decisions. @govnepal/ui adds only behavior
  * (ARIA, keyboard, focus management) on top of these classes — so a plain-HTML site or a CMS
  * gets the same interface without a JS framework, and a future Vue or Web Component port
  * re-implements behavior only, never a design decision.
@@ -133,6 +133,6 @@ writeFileSync(resolve(dist, "civic-calm.css"), parts.join("\n"));
 
 const bytes = readFileSync(resolve(dist, "civic-calm.css")).length;
 console.log(
-  `@nepal-gov/css built: ${ORDER.length} layers, ${(bytes / 1024).toFixed(1)} KB raw ` +
+  `@govnepal/css built: ${ORDER.length} layers, ${(bytes / 1024).toFixed(1)} KB raw ` +
     `+ ${readdirSync(resolve(dist, "fonts")).length} font files, from guidelines ${version}.`,
 );

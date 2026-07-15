@@ -4,7 +4,7 @@
  * whether to render the client `<Example>` island, without pulling the client bundle into the
  * server render.
  *
- * This list is the ten components implemented in @nepal-gov/ui so far; it grows as components land.
+ * This list is the ten components implemented in @govnepal/ui so far; it grows as components land.
  */
 export const EXAMPLE_IDS = new Set([
   "button",

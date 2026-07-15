@@ -14,13 +14,13 @@ importers:
 
   apps/design-system:
     dependencies:
-      '@nepal-gov/css':
+      '@govnepal/css':
         specifier: workspace:^
         version: link:../../packages/css
-      '@nepal-gov/tokens':
+      '@govnepal/tokens':
         specifier: workspace:^
         version: link:../../packages/tokens
-      '@nepal-gov/ui':
+      '@govnepal/ui':
         specifier: workspace:^
         version: link:../../packages/ui
       marked:
@@ -54,7 +54,7 @@ importers:
 
   packages/css:
     dependencies:
-      '@nepal-gov/tokens':
+      '@govnepal/tokens':
         specifier: workspace:^
         version: link:../tokens
     devDependencies:
@@ -70,10 +70,10 @@ importers:
 
   packages/ui:
     dependencies:
-      '@nepal-gov/css':
+      '@govnepal/css':
         specifier: workspace:^
         version: link:../css
-      '@nepal-gov/tokens':
+      '@govnepal/tokens':
         specifier: workspace:^
         version: link:../tokens
     devDependencies:

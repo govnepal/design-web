@@ -1,12 +1,12 @@
-# @nepal-gov/tokens
+# @govnepal/tokens
 
 The bridge from policy to code. Generates CSS custom properties from the W3C DTCG tokens in
 `design-guidelines`, for every display mode. No product code should hardcode a visual value —
 this package is why it never has to.
 
 ```
-pnpm --filter @nepal-gov/tokens build     # regenerate dist/ from .guidelines/
-pnpm --filter @nepal-gov/tokens test
+pnpm --filter @govnepal/tokens build     # regenerate dist/ from .guidelines/
+pnpm --filter @govnepal/tokens test
 ```
 
 Everything in `dist/` is **generated**. To change a token value, change it in `design-guidelines`
@@ -15,7 +15,7 @@ and re-run the build — never edit the output.
 ## Usage
 
 ```js
-import "@nepal-gov/tokens/tokens.css";
+import "@govnepal/tokens/tokens.css";
 ```
 
 ```css

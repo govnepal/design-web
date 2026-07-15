@@ -1,15 +1,15 @@
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
-import { themeInitScript } from "@nepal-gov/ui";
+import { themeInitScript } from "@govnepal/ui";
 import { guidelinesVersion } from "@/lib/guidelines";
 import { SiteNav } from "@/components/SiteNav";
 
-// The three package stylesheets, imported once at the root so Next bundles them. @nepal-gov/css
+// The three package stylesheets, imported once at the root so Next bundles them. @govnepal/css
 // carries the self-hosted Noto fonts (§9.2 prohibits CDN fonts); the bundler resolves the woff2
 // URLs from the package.
-import "@nepal-gov/tokens/tokens.css";
-import "@nepal-gov/css/fonts.css";
-import "@nepal-gov/css/civic-calm.css";
+import "@govnepal/tokens/tokens.css";
+import "@govnepal/css/fonts.css";
+import "@govnepal/css/civic-calm.css";
 import "@/styles/site.css";
 
 export const metadata: Metadata = {

@@ -1,15 +1,15 @@
 # apps/design-system
 
 The public docs site, and the design system's **first real consumer** — built entirely from
-`@nepal-gov/{tokens,css,ui}`, so it is its own proof that the packages compose into a compliant
+`@govnepal/{tokens,css,ui}`, so it is its own proof that the packages compose into a compliant
 page (§10.2: "if a competent team cannot produce a compliant page within an hour of install, that
 is a defect in the design system").
 
 Built with **Next.js (App Router)** + React.
 
 ```
-pnpm --filter @nepal-gov/design-system-site dev
-pnpm --filter @nepal-gov/design-system-site build   # static export to out/
+pnpm --filter @govnepal/design-system-site dev
+pnpm --filter @govnepal/design-system-site build   # static export to out/
 ```
 
 ## How it's structured

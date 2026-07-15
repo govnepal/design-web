@@ -1,5 +1,5 @@
 {
-  "name": "@nepal-gov/css",
+  "name": "@govnepal/css",
   "version": "0.1.0",
   "description": "Civic Calm — the framework-agnostic stylesheet. Semantic HTML plus .gov-* classes, no JavaScript.",
   "license": "MIT",
@@ -28,7 +28,7 @@
     "test": "node --test"
   },
   "dependencies": {
-    "@nepal-gov/tokens": "workspace:^"
+    "@govnepal/tokens": "workspace:^"
   },
   "devDependencies": {
     "yaml": "^2.9.0"

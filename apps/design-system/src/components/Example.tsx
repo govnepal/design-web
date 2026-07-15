@@ -1,12 +1,12 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { Container, Stack, PageSection, Button, Link, TextInput, ErrorSummary, Alert, Badge, Header } from "@nepal-gov/ui";
+import { Container, Stack, PageSection, Button, Link, TextInput, ErrorSummary, Alert, Badge, Header } from "@govnepal/ui";
 import { ModePanel } from "./ModePanel";
 
 /**
  * A live, mode-previewable example per component, keyed by spec id. The docs site pairs each
- * component's guideline spec with the REAL component rendered from @nepal-gov/ui — so the page a
+ * component's guideline spec with the REAL component rendered from @govnepal/ui — so the page a
  * developer reads and the code they install can never drift apart.
  *
  * Only the ten components built so far have an example; the rest render their spec alone until

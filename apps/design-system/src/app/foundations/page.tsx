@@ -18,7 +18,7 @@ export default function FoundationsIndexPage() {
           <h1>Foundations</h1>
           <p className="site-hero__lead">
             The visual foundations of Civic Calm, rendered from the guidelines. The values behind
-            them — colours, spacing, the type scale — ship as <code className="gov-reference">@nepal-gov/tokens</code>.
+            them — colours, spacing, the type scale — ship as <code className="gov-reference">@govnepal/tokens</code>.
           </p>
         </section>
         <div className="site-grid">

@@ -1,5 +1,5 @@
 {
-  "name": "@nepal-gov/design-web",
+  "name": "@govnepal/design-web",
   "private": true,
   "type": "module",
   "packageManager": "pnpm@10.12.1",
