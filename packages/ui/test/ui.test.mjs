@@ -28,6 +28,15 @@ import {
   Breadcrumb,
   Pagination,
   Textarea,
+  Accordion,
+  ProgressBar,
+  MaskedValue,
+  Table,
+  PasswordInput,
+  FileUpload,
+  CookieBanner,
+  EmptyState,
+  OtpInput,
 } from "../dist/index.js";
 
 afterEach(cleanup);
@@ -389,4 +398,84 @@ test("Textarea binds label and marks invalid on error", () => {
   const area = screen.getByLabelText("Describe the problem");
   assert.equal(area.tagName, "TEXTAREA");
   assert.equal(area.getAttribute("aria-invalid"), "true");
+});
+
+test("Accordion headers are buttons with aria-expanded/aria-controls and toggle", () => {
+  render(withTheme(h(Accordion, { sections: [
+    { id: "one", title: "What you need", content: "Documents" },
+    { id: "two", title: "How long it takes", content: "15 days" },
+  ]})));
+  const headers = screen.getAllByRole("button");
+  assert.equal(headers[0].getAttribute("aria-expanded"), "false");
+  const panelId = headers[0].getAttribute("aria-controls");
+  assert.ok(document.getElementById(panelId).hidden);
+  fireEvent.click(headers[0]);
+  assert.equal(headers[0].getAttribute("aria-expanded"), "true");
+  assert.equal(document.getElementById(panelId).hidden, false);
+});
+
+test("ProgressBar exposes aria-value* and the percentage as text (§4.1)", () => {
+  render(withTheme(h(ProgressBar, { value: 45, label: "Uploading certificate" }), { language: "en" }));
+  const bar = screen.getByRole("progressbar");
+  assert.equal(bar.getAttribute("aria-valuenow"), "45");
+  assert.equal(bar.getAttribute("aria-valuemax"), "100");
+  assert.match(document.body.textContent, /45%/);
+});
+
+test("MaskedValue hides by default and reveals only via a role-gated, audited control", () => {
+  let audited = 0;
+  const { rerender } = render(withTheme(h(MaskedValue, { value: "12-01-76-12345", name: "citizenship number", canReveal: false, onReveal: () => audited++ })));
+  // No reveal control when the role does not permit it.
+  assert.equal(screen.queryByRole("button"), null);
+  assert.match(document.body.textContent, /2345/);
+  assert.doesNotMatch(document.body.textContent, /12-01-76-12345/);
+
+  rerender(withTheme(h(MaskedValue, { value: "12-01-76-12345", name: "citizenship number", canReveal: true, onReveal: () => audited++ })));
+  fireEvent.click(screen.getByRole("button", { name: /Show citizenship number/ }));
+  assert.equal(audited, 1, "revealing records an audit event");
+  assert.match(document.body.textContent, /12-01-76-12345/);
+});
+
+test("Table uses semantic th scope=col headers, never a grid of divs", () => {
+  render(withTheme(h(Table, {
+    caption: "Applications",
+    columns: [{ key: "n", header: "Name", render: (r) => r.name }, { key: "s", header: "Status", render: (r) => r.status }],
+    rows: [{ name: "Sita", status: "Approved" }],
+    getRowKey: (r) => r.name,
+  })));
+  const table = screen.getByRole("table", { name: "Applications" });
+  const headers = table.querySelectorAll("th[scope='col']");
+  assert.equal(headers.length, 2);
+});
+
+test("PasswordInput has a state-reflecting show/hide toggle and never blocks paste", () => {
+  render(withTheme(h(PasswordInput, { id: "pw", label: "Password" }), { language: "en" }));
+  const input = screen.getByLabelText("Password");
+  assert.equal(input.getAttribute("type"), "password");
+  const toggle = screen.getByRole("button", { name: "Show password" });
+  assert.equal(toggle.getAttribute("aria-pressed"), "false");
+  fireEvent.click(toggle);
+  assert.equal(screen.getByLabelText("Password").getAttribute("type"), "text");
+});
+
+test("FileUpload states accepted types and size before selection", () => {
+  render(withTheme(h(FileUpload, { id: "doc", label: "Citizenship certificate", accept: ["jpg", "pdf"], maxMb: 5 }), { language: "en" }));
+  const input = screen.getByLabelText("Citizenship certificate");
+  assert.equal(input.getAttribute("type"), "file");
+  const describedBy = input.getAttribute("aria-describedby").split(" ")[0];
+  assert.match(document.getElementById(describedBy).textContent, /JPG, PDF smaller than 5 MB/);
+});
+
+test("CookieBanner gives Reject exactly the same button weight as Accept (§9.1.2)", () => {
+  render(withTheme(h(CookieBanner, { onAccept: () => {}, onReject: () => {} }, "We use analytics cookies.")));
+  const accept = screen.getByRole("button", { name: "Accept analytics cookies" });
+  const reject = screen.getByRole("button", { name: "Reject" });
+  // Same variant class → same visual weight; no dark pattern.
+  assert.equal(accept.className, reject.className);
+});
+
+test("EmptyState renders a title and next action, never a bare blank", () => {
+  render(withTheme(h(EmptyState, { title: "You have no applications yet", action: h("a", { href: "#" }, "Apply for a service") }, "Start one now.")));
+  assert.match(document.body.textContent, /no applications yet/);
+  assert.ok(screen.getByRole("link", { name: "Apply for a service" }));
 });

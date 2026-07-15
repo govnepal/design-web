@@ -1,0 +1,63 @@
+/* OTP, password, search, masked value (components/otp-input.md, password-input.md, search-box.md,
+ * masked-value.md). Password and amount reuse .gov-input; these add what's specific. */
+
+/* OTP — segmented numeric boxes; a single accessible field underneath in the behavior layer. */
+.gov-otp {
+  display: flex;
+  gap: var(--gov-space-2);
+}
+
+.gov-otp__box {
+  inline-size: 3ch;
+  min-block-size: var(--gov-target-min-size);
+  padding: var(--gov-space-2);
+  text-align: center;
+  font-family: var(--gov-font-family-mono);
+  font-size: var(--gov-type-body-large-font-size);
+  background: var(--gov-color-background-surface);
+  border: var(--gov-border-width-md) solid var(--gov-color-border-input);
+  border-radius: var(--gov-radius-sm);
+}
+
+/* Password — a field with a trailing show/hide toggle. */
+.gov-password {
+  display: flex;
+  align-items: stretch;
+}
+
+.gov-password .gov-input {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  flex: 1;
+}
+
+.gov-password__toggle {
+  display: inline-flex;
+  align-items: center;
+  padding-inline: var(--gov-space-3);
+  border: var(--gov-border-width-md) solid var(--gov-color-border-input);
+  border-inline-start: 0;
+  border-start-end-radius: var(--gov-radius-sm);
+  border-end-end-radius: var(--gov-radius-sm);
+  background: var(--gov-color-background-secondary);
+  color: var(--gov-color-action-secondary-text);
+  cursor: pointer;
+}
+
+/* Search — a field with a leading icon and a submit. */
+.gov-search {
+  display: flex;
+  gap: var(--gov-space-2);
+}
+
+.gov-search .gov-input {
+  flex: 1;
+}
+
+/* Masked value — a monospace value plus a reveal control. */
+.gov-masked {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gov-space-2);
+  font-family: var(--gov-font-family-mono);
+}

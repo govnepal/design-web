@@ -41,6 +41,21 @@ export const EXAMPLE_IDS = new Set([
   "confirmation-dialog",
   "summary-list",
   "character-count",
+  "table",
+  "empty-state",
+  "loading-state",
+  "accordion",
+  "progress-bar",
+  "password-input",
+  "otp-input",
+  "amount-input",
+  "address-block",
+  "masked-value",
+  "file-upload",
+  "search-box",
+  "cookie-banner",
+  "offline-banner",
+  "session-timeout-warning",
 ]);
 
 export function hasExample(id: string): boolean {

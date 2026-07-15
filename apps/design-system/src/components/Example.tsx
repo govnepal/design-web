@@ -37,6 +37,22 @@ import {
   useToast,
   SummaryList,
   CharacterCount,
+  Table,
+  EmptyState,
+  LoadingState,
+  Accordion,
+  ProgressBar,
+  PasswordInput,
+  OtpInput,
+  AmountInput,
+  AddressBlock,
+  MaskedValue,
+  FileUpload,
+  SearchBox,
+  CookieBanner,
+  OfflineBanner,
+  SessionTimeoutWarning,
+  type AddressValue,
 } from "@govnepal/ui";
 import { ModePanel } from "./ModePanel";
 
@@ -82,6 +98,50 @@ function CharacterCountExample() {
     <div>
       <Textarea id="ex-cc" label="Describe the problem" value={value} onChange={(e) => setValue(e.target.value)} maxLength={200} />
       <CharacterCount current={value.length} max={200} />
+    </div>
+  );
+}
+function MaskedExample() {
+  return <MaskedValue value="12-01-76-12345" name="citizenship number" canReveal onReveal={() => {}} />;
+}
+function AmountExample() {
+  const [v, setV] = useState("1500");
+  return <AmountInput label="Fee" value={v} onChange={setV} />;
+}
+function OtpExample() {
+  const [code, setCode] = useState("");
+  return <OtpInput label="Enter the 6-digit code we sent to your phone" value={code} onChange={setCode} resendIn={0} onResend={() => {}} />;
+}
+function AddressExample() {
+  const [addr, setAddr] = useState<AddressValue>({});
+  return (
+    <AddressBlock legend="Permanent address" value={addr} onChange={setAddr}
+      provinces={[{ value: "3", label: "Bagmati" }, { value: "1", label: "Koshi" }]}
+      districts={addr.province ? [{ value: "27", label: "Kathmandu" }, { value: "24", label: "Lalitpur" }] : []}
+      localLevels={addr.district ? [{ value: "27001", label: "Kathmandu Metropolitan City" }] : []} />
+  );
+}
+function SessionTimeoutExample() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button type="button" onClick={() => setOpen(true)}>Simulate idle timeout</Button>
+      <SessionTimeoutWarning open={open} secondsLeft={120} onStay={() => setOpen(false)} onSignOut={() => setOpen(false)} />
+    </>
+  );
+}
+function CookieBannerExample() {
+  const [choice, setChoice] = useState<string | null>(null);
+  return (
+    <div style={{ position: "relative", minBlockSize: "6rem" }}>
+      {choice ? <p className="gov-text-secondary">You chose: {choice}. (In a real service this is revisitable from the footer.)</p> : null}
+      {!choice && (
+        <div style={{ position: "static" }}>
+          <CookieBanner onAccept={() => setChoice("Accept")} onReject={() => setChoice("Reject")}>
+            We use analytics cookies to improve this service. You can decline.
+          </CookieBanner>
+        </div>
+      )}
     </div>
   );
 }
@@ -356,6 +416,62 @@ const EXAMPLES: Record<string, ReactNode> = {
   ),
 
   "character-count": <CharacterCountExample />,
+
+  table: (
+    <Table
+      caption="Recent applications"
+      columns={[
+        { key: "ref", header: "Reference", render: (r: { ref: string; name: string; status: string }) => r.ref },
+        { key: "name", header: "Applicant", render: (r: { ref: string; name: string; status: string }) => r.name },
+        { key: "status", header: "Status", render: (r: { ref: string; name: string; status: string }) => r.status },
+      ]}
+      rows={[
+        { ref: "NPGDDG-2082-00113", name: "Sita Sharma", status: "Under review" },
+        { ref: "NPGDDG-2082-00114", name: "Ram Thapa", status: "Approved" },
+      ]}
+      getRowKey={(r: { ref: string }) => r.ref}
+    />
+  ),
+
+  "empty-state": (
+    <EmptyState title="You have not started any applications yet" action={<Link href="#">Apply for a service</Link>}>
+      When you start an application, it will appear here so you can track it.
+    </EmptyState>
+  ),
+
+  "loading-state": <LoadingState label="Loading applications" />,
+
+  accordion: (
+    <Accordion
+      sections={[
+        { id: "need", title: "What you will need", content: "Your citizenship certificate and a recent photo." },
+        { id: "time", title: "How long it takes", content: "Up to 15 working days." },
+        { id: "cost", title: "How much it costs", content: "रु 500, paid at the review step." },
+      ]}
+    />
+  ),
+
+  "progress-bar": <ProgressBar value={65} label="Uploading citizenship certificate" />,
+
+  "password-input": <PasswordInput id="ex-pw" label="Password" hint="At least 8 characters." autoComplete="new-password" />,
+
+  "otp-input": <OtpExample />,
+
+  "amount-input": <AmountExample />,
+
+  "address-block": <AddressExample />,
+
+  "masked-value": <MaskedExample />,
+
+  "file-upload": <FileUpload id="ex-file" label="Citizenship certificate" accept={["jpg", "png", "pdf"]} maxMb={5} />,
+
+  "search-box": <SearchBox label="Search services" onSubmit={() => {}} />,
+
+  "cookie-banner": <CookieBannerExample />,
+
+  "offline-banner": <OfflineBanner>You are offline. You can still view this page; your draft is saved. We will reconnect automatically.</OfflineBanner>,
+
+  "session-timeout-warning": <SessionTimeoutExample />,
 };
 
 export function Example({ id }: { id: string }) {

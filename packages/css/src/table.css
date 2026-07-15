@@ -1,0 +1,34 @@
+/* Table (components/table.md) — semantic rows/columns for comparison. */
+.gov-table {
+  inline-size: 100%;
+  border-collapse: collapse;
+}
+
+.gov-table caption {
+  text-align: start;
+  font-weight: var(--gov-font-weight-semibold);
+  margin-block-end: var(--gov-space-2);
+}
+
+.gov-table th,
+.gov-table td {
+  text-align: start;
+  padding: var(--gov-space-2) var(--gov-space-3);
+  border-block-end: var(--gov-border-width-sm) solid var(--gov-color-border-default);
+}
+
+.gov-table th {
+  background: var(--gov-color-background-secondary);
+  font-weight: var(--gov-font-weight-semibold);
+}
+
+.gov-table__num {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.gov-table--sticky thead th {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--gov-z-sticky);
+}

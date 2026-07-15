@@ -55,4 +55,26 @@ export { CharacterCount } from "./CharacterCount.js";
 export { SummaryList, type SummaryRow } from "./SummaryList.js";
 export { Tag } from "./Tag.js";
 
+// Data display
+export { Table, type Column } from "./Table.js";
+export { EmptyState } from "./EmptyState.js";
+export { LoadingState, Skeleton } from "./LoadingState.js";
+export { ProgressBar } from "./ProgressBar.js";
+export { Accordion, type AccordionSection } from "./Accordion.js";
+
+// Forms (batch B)
+export { PasswordInput } from "./PasswordInput.js";
+export { OtpInput } from "./OtpInput.js";
+export { AmountInput } from "./AmountInput.js";
+export { SearchBox } from "./SearchBox.js";
+export { FileUpload } from "./FileUpload.js";
+export { AddressBlock, type AddressValue } from "./AddressBlock.js";
+
+// Government / trust
+export { MaskedValue } from "./MaskedValue.js";
+export { QrCode } from "./QrCode.js";
+export { CookieBanner } from "./CookieBanner.js";
+export { OfflineBanner } from "./OfflineBanner.js";
+export { SessionTimeoutWarning } from "./SessionTimeoutWarning.js";
+
 export { STATUS_TAXONOMY, type StatusId, type StatusEntry, type BadgeVariant } from "./generated/statusTaxonomy.js";

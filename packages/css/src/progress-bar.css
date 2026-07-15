@@ -1,0 +1,25 @@
+/* Progress bar (components/progress-bar.md) — determinate, forward-only, with a text percentage. */
+.gov-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gov-space-2);
+}
+
+.gov-progress__track {
+  block-size: 8px;
+  background: var(--gov-color-control-track);
+  border-radius: var(--gov-radius-full);
+  overflow: hidden;
+}
+
+.gov-progress__fill {
+  block-size: 100%;
+  background: var(--gov-color-control-indicator);
+  border-radius: var(--gov-radius-full);
+  transition: inline-size var(--gov-motion-duration-base) var(--gov-motion-easing-standard);
+}
+
+.gov-progress__label {
+  font-size: var(--gov-type-small-font-size);
+  color: var(--gov-color-text-secondary);
+}
