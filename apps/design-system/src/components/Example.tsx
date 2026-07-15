@@ -52,7 +52,26 @@ import {
   CookieBanner,
   OfflineBanner,
   SessionTimeoutWarning,
+  BottomNavigation,
+  Sidebar,
+  ApplicationStatusTracker,
+  CitizenProfileCard,
+  AuditLogItem,
+  ApprovalDecisionPanel,
+  OfficerReviewPanel,
+  FeedbackWidget,
+  DataGrid,
+  FilterBar,
+  ExportAction,
+  DatePicker,
+  CaptureStatus,
+  FaceCaptureFrame,
+  DuplicateMatchWarning,
+  MaskedValue as MaskedValueComp,
+  SummaryList as SummaryListComp,
   type AddressValue,
+  type DateParts,
+  type AppliedFilter,
 } from "@govnepal/ui";
 import { ModePanel } from "./ModePanel";
 
@@ -145,6 +164,32 @@ function CookieBannerExample() {
     </div>
   );
 }
+function DatePickerExample() {
+  const [d, setD] = useState<DateParts>({});
+  return <DatePicker legend="Date of birth" value={d} onChange={setD} />;
+}
+function FilterBarExample() {
+  const [applied, setApplied] = useState<AppliedFilter[]>([
+    { id: "status", label: "Status: Under review", value: "Under review" },
+    { id: "prov", label: "Province: Bagmati", value: "Bagmati" },
+  ]);
+  return (
+    <FilterBar applied={applied} onRemove={(id) => setApplied((a) => a.filter((f) => f.id !== id))} onClear={() => setApplied([])} resultCount={applied.length ? 42 : 128}>
+      <Select label="Status" placeholder="Any status" options={[{ value: "ur", label: "Under review" }, { value: "ap", label: "Approved" }]} />
+    </FilterBar>
+  );
+}
+function ExportExample() {
+  const [busy, setBusy] = useState(false);
+  return <ExportAction format="CSV" exporting={busy} onExport={() => { setBusy(true); setTimeout(() => setBusy(false), 1200); }} />;
+}
+function FeedbackExample() {
+  return <FeedbackWidget onRespond={() => {}} reportHref="#report" />;
+}
+function DecisionExample() {
+  return <ApprovalDecisionPanel onApprove={() => {}} onRequestCorrection={() => {}} onReject={() => {}} />;
+}
+const captureExample = (message: string, state: "pass" | "retry" | "capturing" = "pass") => <CaptureStatus state={state} message={message} />;
 
 // `h` for the wrappers above (this file is .tsx but the wrappers use it once).
 
@@ -472,6 +517,106 @@ const EXAMPLES: Record<string, ReactNode> = {
   "offline-banner": <OfflineBanner>You are offline. You can still view this page; your draft is saved. We will reconnect automatically.</OfflineBanner>,
 
   "session-timeout-warning": <SessionTimeoutExample />,
+
+  "bottom-navigation": (
+    <BottomNavigation
+      items={[
+        { label: "Home", href: "#", icon: "⌂", current: true },
+        { label: "Applications", href: "#", icon: "▤" },
+        { label: "Documents", href: "#", icon: "▦" },
+        { label: "Profile", href: "#", icon: "◔" },
+      ]}
+    />
+  ),
+
+  sidebar: (
+    <Sidebar
+      links={[
+        { label: "Review queue", href: "#", current: true },
+        { label: "Search citizens", href: "#" },
+        { label: "Reports", href: "#" },
+        { label: "Audit trail", href: "#" },
+      ]}
+    />
+  ),
+
+  "application-status-tracker": (
+    <ApplicationStatusTracker
+      sequence={["submitted", "under-review", "correction-required", "approved", "delivered"]}
+      current="correction-required"
+      action={<Link href="#fix">Update your application</Link>}
+    />
+  ),
+
+  "citizen-profile-card": (
+    <CitizenProfileCard
+      nameNe="सीता शर्मा"
+      nameEn="Sita Sharma"
+      rows={[
+        { key: "Citizenship number", value: <MaskedValueComp value="12-01-76-12345" name="citizenship number" canReveal onReveal={() => {}} /> },
+        { key: "Date of birth", value: "2050-05-12 (BS)" },
+        { key: "Province", value: "Bagmati" },
+      ]}
+    />
+  ),
+
+  "audit-log-item": (
+    <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+      <AuditLogItem actor="Officer Sharma" action="approved the application" timestamp="2082-03-15 14:20 NPT" reason="All documents verified" reference="AUD-2082-0091" />
+      <AuditLogItem actor="Officer Gurung" action="requested a correction" timestamp="2082-03-14 11:05 NPT" reason="Citizenship number did not match" reference="AUD-2082-0088" />
+    </ul>
+  ),
+
+  "approval-decision-panel": <DecisionExample />,
+
+  "officer-review-panel": (
+    <OfficerReviewPanel
+      details={<SummaryListComp rows={[{ key: "Applicant", value: "Sita Sharma" }, { key: "Service", value: "Citizenship certificate" }]} />}
+      history={<ApplicationStatusTracker sequence={["submitted", "under-review", "approved"]} current="under-review" />}
+      decision={<DecisionExample />}
+    />
+  ),
+
+  "feedback-widget": <FeedbackExample />,
+
+  "data-grid": (
+    <DataGrid
+      caption="Review queue"
+      columns={[
+        { key: "ref", header: "Reference", render: (r: { ref: string; name: string; days: number }) => r.ref, sortValue: (r: { ref: string }) => r.ref },
+        { key: "name", header: "Applicant", render: (r: { name: string }) => r.name, sortValue: (r: { name: string }) => r.name },
+        { key: "days", header: "Days waiting", numeric: true, render: (r: { days: number }) => r.days, sortValue: (r: { days: number }) => r.days },
+      ]}
+      rows={[
+        { ref: "NPGDDG-00113", name: "Sita Sharma", days: 3 },
+        { ref: "NPGDDG-00114", name: "Ram Thapa", days: 8 },
+        { ref: "NPGDDG-00115", name: "Gita Rai", days: 1 },
+      ]}
+      getRowKey={(r: { ref: string }) => r.ref}
+    />
+  ),
+
+  "filter-bar": <FilterBarExample />,
+
+  "export-action": <ExportExample />,
+
+  "date-picker": <DatePickerExample />,
+
+  "biometric-capture-status": captureExample("Fingerprint captured — good quality", "pass"),
+  "fingerprint-quality-indicator": captureExample("Low quality — press your finger flat and try again", "retry"),
+  "face-capture-frame": <FaceCaptureFrame />,
+  "iris-capture-status": captureExample("Iris captured — alignment good", "pass"),
+
+  "duplicate-match-warning": (
+    <DuplicateMatchWarning
+      actions={<>
+        <Button variant="secondary" type="button">Not a match</Button>
+        <Button variant="secondary" type="button">Escalate</Button>
+      </>}
+    >
+      A possible duplicate record was found. Review the details before continuing — a possible match is not proof.
+    </DuplicateMatchWarning>
+  ),
 };
 
 export function Example({ id }: { id: string }) {

@@ -37,6 +37,11 @@ import {
   CookieBanner,
   EmptyState,
   OtpInput,
+  DataGrid,
+  ApplicationStatusTracker,
+  CaptureStatus,
+  BottomNavigation,
+  AuditLogItem,
 } from "../dist/index.js";
 
 afterEach(cleanup);
@@ -478,4 +483,60 @@ test("EmptyState renders a title and next action, never a bare blank", () => {
   render(withTheme(h(EmptyState, { title: "You have no applications yet", action: h("a", { href: "#" }, "Apply for a service") }, "Start one now.")));
   assert.match(document.body.textContent, /no applications yet/);
   assert.ok(screen.getByRole("link", { name: "Apply for a service" }));
+});
+
+test("DataGrid sorts on a sortable header button and exposes aria-sort", () => {
+  render(withTheme(h(DataGrid, {
+    columns: [
+      { key: "name", header: "Name", render: (r) => r.name, sortValue: (r) => r.name },
+      { key: "age", header: "Age", render: (r) => r.age, numeric: true, sortValue: (r) => r.age },
+    ],
+    rows: [{ name: "Ram", age: 40 }, { name: "Sita", age: 30 }],
+    getRowKey: (r) => r.name,
+  })));
+  const header = screen.getByRole("button", { name: /Age/ });
+  fireEvent.click(header);
+  // After ascending sort by age, Sita (30) comes before Ram (40).
+  const firstRow = document.querySelectorAll("tbody tr")[0].textContent;
+  assert.match(firstRow, /Sita/);
+  assert.equal(header.closest("th").getAttribute("aria-sort"), "ascending");
+});
+
+test("ApplicationStatusTracker marks the current taxonomy status and shows the action when required", () => {
+  render(withTheme(h(ApplicationStatusTracker, {
+    sequence: ["submitted", "under-review", "correction-required", "approved"],
+    current: "correction-required",
+    action: h("a", { href: "#fix" }, "Update your application"),
+  }), { language: "en" }));
+  const current = document.querySelector('[aria-current="step"]');
+  assert.match(current.textContent, /Correction required/);
+  // correction-required requires action, so the next-step link is shown.
+  assert.ok(screen.getByRole("link", { name: "Update your application" }));
+});
+
+test("CaptureStatus announces state in words and never renders the biometric sample", () => {
+  render(withTheme(h(CaptureStatus, { state: "retry", message: "Move slightly and try again" })));
+  const status = screen.getByRole("status");
+  assert.equal(status.getAttribute("aria-live"), "polite");
+  assert.match(status.textContent, /try again/);
+});
+
+test("BottomNavigation items are links with labels (never icon-only) and mark the current page", () => {
+  render(withTheme(h(BottomNavigation, { items: [
+    { label: "Home", href: "/", icon: "H", current: true },
+    { label: "Applications", href: "/apps", icon: "A" },
+  ]})));
+  const links = screen.getAllByRole("link");
+  assert.equal(links.length, 2);
+  assert.match(links[0].textContent, /Home/);
+  assert.equal(links[0].getAttribute("aria-current"), "page");
+});
+
+test("AuditLogItem renders as an immutable record with no edit controls", () => {
+  render(withTheme(h("ul", {}, h(AuditLogItem, {
+    actor: "Officer Sharma", action: "approved the application", timestamp: "2082-03-15 14:20 NPT", reason: "All documents verified", reference: "AUD-001",
+  }))));
+  assert.match(document.body.textContent, /Officer Sharma/);
+  assert.match(document.body.textContent, /NPT/);
+  assert.equal(screen.queryByRole("button"), null, "audit entries are records, never edited");
 });

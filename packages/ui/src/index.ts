@@ -77,4 +77,30 @@ export { CookieBanner } from "./CookieBanner.js";
 export { OfflineBanner } from "./OfflineBanner.js";
 export { SessionTimeoutWarning } from "./SessionTimeoutWarning.js";
 
+// Navigation (officer/citizen)
+export { BottomNavigation, type BottomNavItem } from "./BottomNavigation.js";
+export { Sidebar, type SidebarLink } from "./Sidebar.js";
+
+// Government / officer
+export { ApplicationStatusTracker } from "./ApplicationStatusTracker.js";
+export { CitizenProfileCard } from "./CitizenProfileCard.js";
+export { AuditLogItem } from "./AuditLogItem.js";
+export { DocumentPreview } from "./DocumentPreview.js";
+export { OfficerReviewPanel } from "./OfficerReviewPanel.js";
+export { ApprovalDecisionPanel } from "./ApprovalDecisionPanel.js";
+export { FeedbackWidget } from "./FeedbackWidget.js";
+
+// Data (officer)
+export { DataGrid, type GridColumn } from "./DataGrid.js";
+export { FilterBar, type AppliedFilter } from "./FilterBar.js";
+export { ExportAction } from "./ExportAction.js";
+
+// Forms (batch C)
+export { DatePicker, type DateParts } from "./DatePicker.js";
+export { CameraCapture } from "./CameraCapture.js";
+
+// NID / biometric
+export { CaptureStatus, FaceCaptureFrame } from "./CaptureStatus.js";
+export { DuplicateMatchWarning } from "./DuplicateMatchWarning.js";
+
 export { STATUS_TAXONOMY, type StatusId, type StatusEntry, type BadgeVariant } from "./generated/statusTaxonomy.js";

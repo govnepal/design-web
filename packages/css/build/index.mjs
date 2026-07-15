@@ -124,6 +124,8 @@ const ORDER = [
   "progress-bar.css",
   "navigation.css",
   "nav-extra.css",
+  "officer.css",
+  "capture.css",
   "identity.css",
   "header.css",
   "print.css",

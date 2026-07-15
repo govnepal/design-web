@@ -1,0 +1,31 @@
+/* Biometric capture status indicators (batch C, NID). Status by icon + text + colour, never
+ * colour alone (§4.1); the raw biometric sample is NEVER rendered (§9.1). */
+.gov-capture-status {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gov-space-2);
+  padding: var(--gov-space-3);
+  border: var(--gov-border-width-md) solid var(--gov-color-border-default);
+  border-radius: var(--gov-radius-md);
+}
+
+.gov-capture-status__icon {
+  inline-size: var(--gov-icon-size-lg, 24px);
+  block-size: var(--gov-icon-size-lg, 24px);
+  flex-shrink: 0;
+}
+
+.gov-capture-status--pass { border-color: var(--gov-color-status-success-border); color: var(--gov-color-status-success-text); }
+.gov-capture-status--retry { border-color: var(--gov-color-status-warning-border); color: var(--gov-color-status-warning-text); }
+.gov-capture-status--error { border-color: var(--gov-color-status-error-border); color: var(--gov-color-status-error-text); }
+
+.gov-capture-frame {
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gov-color-background-inverse);
+  color: var(--gov-color-text-inverse);
+  border-radius: var(--gov-radius-md);
+  border: var(--gov-border-width-lg) dashed var(--gov-color-border-strong);
+}

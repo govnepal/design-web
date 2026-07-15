@@ -56,6 +56,23 @@ export const EXAMPLE_IDS = new Set([
   "cookie-banner",
   "offline-banner",
   "session-timeout-warning",
+  "bottom-navigation",
+  "sidebar",
+  "application-status-tracker",
+  "citizen-profile-card",
+  "audit-log-item",
+  "approval-decision-panel",
+  "officer-review-panel",
+  "feedback-widget",
+  "data-grid",
+  "filter-bar",
+  "export-action",
+  "date-picker",
+  "biometric-capture-status",
+  "fingerprint-quality-indicator",
+  "face-capture-frame",
+  "iris-capture-status",
+  "duplicate-match-warning",
 ]);
 
 export function hasExample(id: string): boolean {
