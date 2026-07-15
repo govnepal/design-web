@@ -1,0 +1,118 @@
+/* Government header (components/header.md, implementing identity/government-header).
+ *
+ * "The most-rendered identity surface in the whole system — every service, every page. It is
+ * deliberately boring: identical everywhere." There is no variant per ministry and no opt-out:
+ * a single header pattern is the citizen's primary cue that a site is genuinely governmental,
+ * and that only works if it is absolutely consistent (§9.2). Only the office name and service
+ * name change. */
+
+.gov-header {
+  background: var(--gov-color-background-surface);
+  /* The 4px Simrik top rule is the single permitted crimson identity accent on the page.
+   * color.identity.* is reserved for the state; it is never a status, never destructive, and
+   * never interactive decoration (§2.1, §5.2). */
+  border-block-start: var(--gov-border-width-lg) solid var(--gov-color-identity-crimson);
+  border-block-end: var(--gov-border-width-sm) solid var(--gov-color-border-default);
+}
+
+.gov-header__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--gov-space-4);
+  padding-block: var(--gov-space-3);
+}
+
+.gov-header__lockup {
+  display: flex;
+  align-items: center;
+  gap: var(--gov-space-3);
+  /* The lockup as a whole is not a link target competing with the service name. */
+  text-decoration: none;
+  color: var(--gov-color-text-primary);
+  margin-inline-end: auto;
+}
+
+/* The emblem is loaded from the verified master in design-assets. It is NEVER drawn here — not
+ * as an inline SVG, not as a font glyph, not as an approximation. Recreating, recolouring, or
+ * tracing it is prohibited (identity/emblem), and an outdated or redrawn emblem is a legal error,
+ * not a style choice. The reversed variant is selected for dark surfaces by the behavior layer. */
+.gov-header__emblem {
+  block-size: 48px;
+  inline-size: auto;
+  flex-shrink: 0;
+}
+
+/* Dev-only: shown when no emblem asset has been supplied. It is deliberately ugly and says so.
+ * design-assets/emblems/files/ is currently EMPTY — no verified master exists yet — and the one
+ * thing this system must not do is invent a stand-in that looks plausible enough to ship. */
+.gov-header__emblem-missing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  block-size: 48px;
+  inline-size: 48px;
+  flex-shrink: 0;
+  border: var(--gov-border-width-md) dashed var(--gov-color-status-error-border);
+  color: var(--gov-color-status-error-text);
+  font-size: var(--gov-type-caption-font-size);
+  line-height: 1.1;
+  text-align: center;
+  font-weight: var(--gov-font-weight-semibold);
+}
+
+/* Nepali first, English second — Article 7 makes Nepali in Devanagari the language of official
+ * business, and the header is where that is most visible (identity/government-header). */
+.gov-header__office {
+  display: flex;
+  flex-direction: column;
+}
+
+.gov-header__office-ne {
+  font-weight: var(--gov-font-weight-semibold);
+}
+
+.gov-header__office-en {
+  color: var(--gov-color-text-secondary);
+  font-size: var(--gov-type-small-font-size);
+  line-height: var(--gov-type-small-line-height);
+}
+
+.gov-header__service {
+  font-size: var(--gov-type-h3-font-size);
+  line-height: var(--gov-type-h3-line-height);
+  font-weight: var(--gov-font-weight-semibold);
+}
+
+/* Language switcher: TEXT, never flags. Flags represent nations, not languages — Nepal's flag
+ * must not toggle English (identity/government-header). */
+.gov-header__language {
+  display: flex;
+  align-items: center;
+  gap: var(--gov-space-2);
+}
+
+.gov-header__language a {
+  min-block-size: var(--gov-target-min-size);
+  display: inline-flex;
+  align-items: center;
+  padding-inline: var(--gov-space-2);
+}
+
+.gov-header__language [aria-current="true"] {
+  font-weight: var(--gov-font-weight-semibold);
+  color: var(--gov-color-text-primary);
+  text-decoration: none;
+}
+
+/* Mobile: condensed top bar — emblem + service name. Navigation moves to bottom-navigation
+ * (§7.2), so the header does not try to carry it (components/header.md's Platform notes). */
+@media (max-width: 767px) {
+  .gov-header__inner {
+    flex-wrap: wrap;
+    gap: var(--gov-space-2);
+  }
+
+  .gov-header__office-en {
+    display: none;
+  }
+}

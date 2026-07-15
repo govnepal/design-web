@@ -1,0 +1,74 @@
+/* Layout primitives (components/container.md, stack.md, page-section.md).
+ *
+ * These three are "the grid made installable": the only sanctioned way to set page width,
+ * vertical rhythm, and page bands, so spacing values never appear hardcoded in product code
+ * (§6.1.2). They carry no colour of their own except page-section's background variants. */
+
+/* --- Container: max width, responsive side margins, centred ------------------------------- */
+.gov-container {
+  inline-size: 100%;
+  max-inline-size: var(--gov-grid-max-width);
+  margin-inline: auto;
+  padding-inline: var(--gov-grid-margin);
+}
+
+/* Long-form reading and single-question form pages. The spec puts this at ~720px, which is the
+ * measure at which a line of body text stays comfortably readable (components/container.md). */
+.gov-container--narrow {
+  max-inline-size: 720px;
+}
+
+/* Only for edge-to-edge bands that contain their own container. */
+.gov-container--full-bleed {
+  max-inline-size: none;
+  padding-inline: 0;
+}
+
+/* --- Stack: vertical rhythm ---------------------------------------------------------------
+ * One stack with one gap, rather than per-element margins. `gap` accepts spacing token steps
+ * only — an arbitrary pixel value is a checker violation (components/stack.md). */
+.gov-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gov-stack-gap, var(--gov-space-4));
+}
+
+.gov-stack--1 { --gov-stack-gap: var(--gov-space-1); }
+.gov-stack--2 { --gov-stack-gap: var(--gov-space-2); }
+.gov-stack--3 { --gov-stack-gap: var(--gov-space-3); }
+.gov-stack--4 { --gov-stack-gap: var(--gov-space-4); }
+.gov-stack--6 { --gov-stack-gap: var(--gov-space-6); }
+.gov-stack--8 { --gov-stack-gap: var(--gov-space-8); }
+
+/* --- Page section: a full-width band with contained content ------------------------------- */
+.gov-page-section {
+  padding-block: var(--gov-space-8);
+  background: var(--gov-color-background-default);
+}
+
+@media (min-width: 1024px) {
+  .gov-page-section {
+    padding-block: var(--gov-space-12);
+  }
+}
+
+/* Alternating bands give a landing page rhythm without decoration. Backgrounds come only from
+ * color.background.* — never a hue tint, because in Civic Calm a hue is always information
+ * (§5.2's colour hierarchy). */
+.gov-page-section--secondary-background {
+  background: var(--gov-color-background-secondary);
+}
+
+.gov-page-section--inverse {
+  background: var(--gov-color-background-inverse);
+  color: var(--gov-color-text-inverse);
+}
+
+/* Button rows and other horizontal clusters. Not a stack — stack is vertical only
+ * (components/stack.md's "when not to use"). Wraps rather than overflowing on a 360px screen. */
+.gov-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gov-space-3);
+}

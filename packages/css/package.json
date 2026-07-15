@@ -1,0 +1,24 @@
+{
+  "name": "@nepal-gov/css",
+  "version": "0.1.0",
+  "description": "Civic Calm — the framework-agnostic stylesheet. Semantic HTML plus .gov-* classes, no JavaScript.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": ["*.css"],
+  "files": ["dist"],
+  "exports": {
+    "./civic-calm.css": "./dist/civic-calm.css",
+    "./fonts.css": "./dist/fonts.css",
+    "./fonts/*": "./dist/fonts/*"
+  },
+  "scripts": {
+    "build": "node build/index.mjs",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@nepal-gov/tokens": "workspace:*"
+  },
+  "devDependencies": {
+    "yaml": "^2.9.0"
+  }
+}

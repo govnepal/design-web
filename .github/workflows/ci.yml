@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The packages are generated FROM design-guidelines (and fonts from design-assets), which
+      # are separate repos. sources.json pins the refs; check them out beside this one so the
+      # sync step can clone them locally. Once these repos are public and tagged, this becomes a
+      # tag checkout instead.
+      - name: Check out design-guidelines
+        uses: actions/checkout@v4
+        with:
+          repository: govnepal/design-guidelines
+          ref: ${{ vars.GUIDELINES_REF || 'main' }}
+          path: ../design-guidelines
+      - name: Check out design-assets
+        uses: actions/checkout@v4
+        with:
+          repository: govnepal/design-assets
+          ref: ${{ vars.ASSETS_REF || 'main' }}
+          path: ../design-assets
+
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm sync
+      - run: pnpm build          # includes the token contrast gate (§5.2) — fails CI on a bad mode
+      - run: pnpm typecheck
+      - run: pnpm test
+
+      # AGENTS.md: "This site must pass its own standard: CI runs the checker on these apps."
+      # Wired once packages/checker exists — the apps it checks do not exist yet either.

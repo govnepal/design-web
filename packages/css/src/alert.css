@@ -1,0 +1,88 @@
+/* Alert (components/alert.md).
+ *
+ * Variant maps 1:1 to a color.status.* triple, so the display modes come for free: teal success
+ * in color-blind-safe, tint-free bordered boxes in high-contrast. Never construct an alert with
+ * custom colours. */
+
+.gov-alert {
+  display: flex;
+  gap: var(--gov-space-3);
+  padding: var(--gov-space-4);
+  border-radius: var(--gov-radius-md);
+  /* Thick leading edge in the status border colour. Together with the icon and the title text,
+   * this means the status is never carried by colour alone (§4.1) — and it is what survives
+   * high-contrast mode, where the background tint is removed entirely. */
+  border-inline-start: var(--gov-border-width-lg) solid;
+}
+
+.gov-alert__icon {
+  inline-size: var(--gov-icon-size-md);
+  block-size: var(--gov-icon-size-md);
+  flex-shrink: 0;
+  margin-block-start: 0.15em;
+}
+
+.gov-alert__title {
+  font-weight: var(--gov-font-weight-semibold);
+}
+
+/* Body states what happened AND what to do next, with the reference number (§3.1.3). */
+.gov-alert__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gov-space-2);
+}
+
+.gov-alert--info {
+  background: var(--gov-color-status-info-background);
+  border-color: var(--gov-color-status-info-border);
+  color: var(--gov-color-status-info-text);
+}
+
+.gov-alert--success {
+  background: var(--gov-color-status-success-background);
+  border-color: var(--gov-color-status-success-border);
+  color: var(--gov-color-status-success-text);
+}
+
+.gov-alert--warning {
+  background: var(--gov-color-status-warning-background);
+  border-color: var(--gov-color-status-warning-border);
+  color: var(--gov-color-status-warning-text);
+}
+
+.gov-alert--error {
+  background: var(--gov-color-status-error-background);
+  border-color: var(--gov-color-status-error-border);
+  color: var(--gov-color-status-error-text);
+}
+
+/* Emergency (§7.4's precedence rule).
+ *
+ * A public-safety notice from the authorized emergency-communication office. It MUST NOT read
+ * like "your application failed" (components/alert.md's alert-emergency-not-form-error): a
+ * citizen has to tell a national disaster alert apart from their own form mistake instantly.
+ *
+ * So it inverts rather than tints — a solid fill where every routine alert is a pale wash. That
+ * is a categorical difference in weight, not a different hue, so it introduces no new colour
+ * into a system where every hue already means exactly one thing (§5.2). It also outranks every
+ * other banner on the page, sitting closest to the government header, above the phase banner and
+ * the cookie banner. It never auto-dismisses and is never suppressed by cookie or notification
+ * preferences — public-safety information is not gated by consent (§9.1.2). */
+.gov-alert--emergency {
+  background: var(--gov-color-status-error-border);
+  border-color: var(--gov-color-status-error-text);
+  color: var(--gov-color-text-on-action);
+  border-inline-start-width: var(--gov-border-width-lg);
+  font-weight: var(--gov-font-weight-medium);
+}
+
+.gov-alert--emergency .gov-alert__title {
+  font-size: var(--gov-type-h3-font-size);
+  line-height: var(--gov-type-h3-line-height);
+}
+
+/* An emergency notice's links must stay legible on the solid fill. */
+.gov-alert--emergency a {
+  color: var(--gov-color-text-on-action);
+}

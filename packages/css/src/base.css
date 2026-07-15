@@ -1,0 +1,125 @@
+/* Element defaults: semantic HTML should already look like Civic Calm before a single class is
+ * applied. That is what lets a CMS or a plain-HTML ministry site comply (§10.2's four-step
+ * quick start) without adopting a component library. */
+
+html {
+  /* Never disable zoom, and never lock text scaling (§4.1). */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--gov-color-background-default);
+  color: var(--gov-color-text-primary);
+  font-family: var(--gov-font-family-ui);
+  font-size: var(--gov-type-body-font-size);
+  font-weight: var(--gov-font-weight-regular);
+  line-height: var(--gov-type-body-line-height);
+  /* Weights below 400 are prohibited (§5.3), so synthetic bolding must never be relied on —
+   * and Devanagari must never be faux-bolded or faux-italicised at all. */
+  font-synthesis: none;
+}
+
+/* Devanagari renders denser than Latin at the same pixel size and needs the taller line (§5.3).
+ * This keys off `lang`, so a Nepali passage inside an English page gets the right leading
+ * without a class — the theme provider sets `lang` on <html>, but a `<p lang="ne">` works too. */
+:lang(ne) {
+  font-size: var(--gov-type-body-ne-font-size);
+  line-height: var(--gov-type-body-ne-line-height);
+}
+
+/* Never letter-space Devanagari: it breaks matra and conjunct joining (§5.3). The type scale
+ * defines no tracking tokens at all — the absence is the policy — so this is a backstop against
+ * a product stylesheet reintroducing it. */
+:lang(ne) {
+  letter-spacing: normal;
+}
+
+h1, h2, h3 {
+  font-weight: var(--gov-font-weight-semibold);
+  color: var(--gov-color-text-primary);
+}
+
+h1 {
+  font-size: var(--gov-type-h1-font-size);
+  line-height: var(--gov-type-h1-line-height);
+}
+
+h2 {
+  font-size: var(--gov-type-h2-font-size);
+  line-height: var(--gov-type-h2-line-height);
+}
+
+h3 {
+  font-size: var(--gov-type-h3-font-size);
+  line-height: var(--gov-type-h3-line-height);
+}
+
+small,
+.gov-text-small {
+  font-size: var(--gov-type-small-font-size);
+  line-height: var(--gov-type-small-line-height);
+}
+
+.gov-text-secondary {
+  color: var(--gov-color-text-secondary);
+}
+
+/* Reference and application numbers render monospaced so a citizen can transcribe them onto a
+ * form or read them down a phone without confusing similar glyphs (typography.json). */
+code, kbd, samp, pre,
+.gov-reference {
+  font-family: var(--gov-font-family-mono);
+}
+
+/* §5.3: Display and H1 step down on mobile. The type scale carries no responsive variants as
+ * tokens, so the two responsive sizes the guideline names in prose are implemented here.
+ * TODO(guidelines): these belong in a token overlay, so the checker can verify them. */
+@media (max-width: 767px) {
+  h1 {
+    font-size: 28px;
+    line-height: 36px;
+  }
+  .gov-display {
+    font-size: 32px;
+    line-height: 40px;
+  }
+}
+
+.gov-display {
+  font-size: var(--gov-type-display-font-size);
+  line-height: var(--gov-type-display-line-height);
+  font-weight: var(--gov-font-weight-semibold);
+}
+
+/* Skip link — the first focusable element on every page (§7.2, §4.1). Visually hidden until
+ * focused; never display:none, which would remove it from the tab order and defeat the point. */
+.gov-skip-link {
+  position: absolute;
+  inset-inline-start: var(--gov-space-4);
+  inset-block-start: var(--gov-space-4);
+  z-index: var(--gov-z-sticky);
+  padding: var(--gov-space-3) var(--gov-space-4);
+  background: var(--gov-color-background-surface);
+  color: var(--gov-color-link-default);
+  font-weight: var(--gov-font-weight-semibold);
+  border-radius: var(--gov-radius-sm);
+  transform: translateY(-200%);
+}
+
+.gov-skip-link:focus {
+  transform: translateY(0);
+}
+
+/* Screen-reader-only text. Used for the error-summary count, chart table equivalents (§7.3.4),
+ * and icon labels — never to hide something a sighted user also needs. */
+.gov-visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
