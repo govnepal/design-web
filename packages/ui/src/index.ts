@@ -7,16 +7,13 @@
  * deliberate — a future Vue or Web Component port re-implements behavior only, never design.
  */
 
-export { ThemeProvider, useTheme, applyTheme, themeInitScript } from "./ThemeProvider.js";
-export type {
-  ColorMode,
-  Language,
-  Calendar,
-  Density,
-  ThemeState,
-  ThemeContextValue,
-  ThemeProviderProps,
-} from "./ThemeProvider.js";
+// Server-safe theme utilities come straight from themeCore (no "use client"), so a React Server
+// Component — e.g. a Next.js root layout — can inline themeInitScript in <head> without importing
+// the client-only provider. The provider and hook come from ThemeProvider ("use client").
+export { applyTheme, themeInitScript } from "./themeCore.js";
+export type { ColorMode, Language, Calendar, Density, ThemeState } from "./themeCore.js";
+export { ThemeProvider, useTheme } from "./ThemeProvider.js";
+export type { ThemeContextValue, ThemeProviderProps } from "./ThemeProvider.js";
 
 export { Container, Stack, PageSection } from "./layout.js";
 export { Button } from "./Button.js";

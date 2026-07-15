@@ -1,3 +1,5 @@
+"use client";
+
 import { ModePanel } from "./ModePanel";
 import { Showcase } from "./Showcase";
 

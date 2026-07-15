@@ -1,3 +1,5 @@
+"use client";
+
 import {
   createContext,
   useCallback,
@@ -8,6 +10,18 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import {
+  applyTheme,
+  loadPersistedTheme,
+  THEME_DEFAULTS,
+  THEME_STORAGE_KEY,
+  type ColorMode,
+  type ThemeState,
+} from "./themeCore.js";
+
+// Server-safe utilities and types live in themeCore; re-export them so consumers have one import.
+export { applyTheme, themeInitScript } from "./themeCore.js";
+export type { ColorMode, Language, Calendar, Density, ThemeState } from "./themeCore.js";
 
 /**
  * The theme provider — the single place where rendering context is set (§10.2, normative).
@@ -18,76 +32,17 @@ import {
  * preview) but nothing else — language never changes mid-page except through a visible switcher.
  */
 
-/** The four color modes (§5.2). large-text and reduced-motion are separate, composable flags. */
-export type ColorMode = "light" | "dark" | "high-contrast" | "color-blind-safe";
-export type Language = "ne" | "en";
-export type Calendar = "BS" | "AD";
-/** Matches data/density-rules.yaml ids; the tokens package's generated type is the source list. */
-export type Density = "citizen-website" | "citizen-mobile-app" | "officer-desktop-app" | "kiosk-counter";
-
-export interface ThemeState {
-  /** Undefined means "follow the OS" — the default until the user chooses explicitly (§10.2). */
-  colorMode: ColorMode | undefined;
-  largeText: boolean;
-  reducedMotion: boolean;
-  language: Language;
-  calendar: Calendar;
-  density: Density;
-}
-
 export interface ThemeContextValue extends ThemeState {
   setColorMode: (mode: ColorMode | undefined) => void;
   setLargeText: (on: boolean) => void;
   setReducedMotion: (on: boolean) => void;
-  setLanguage: (language: Language) => void;
-  setCalendar: (calendar: Calendar) => void;
-  /** The active mode after OS fallback is resolved — for a UI that needs to show the current state. */
+  setLanguage: (language: ThemeState["language"]) => void;
+  setCalendar: (calendar: ThemeState["calendar"]) => void;
+  /** The active mode after OS fallback is resolved — for a UI that needs the current state. */
   resolvedColorMode: ColorMode;
 }
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
-
-const DEFAULTS: ThemeState = {
-  colorMode: undefined,
-  largeText: false,
-  reducedMotion: false,
-  language: "ne", // Nepali-first (Article 7) — the default language of official business.
-  calendar: "BS", // Bikram Sambat is the administrative calendar of record (§3.1).
-  density: "citizen-website",
-};
-
-const STORAGE_KEY = "gov-theme";
-
-/** Read persisted choices. Device storage is the fallback; a signed-in app passes them via props. */
-function loadPersisted(): Partial<ThemeState> {
-  if (typeof localStorage === "undefined") return {};
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as Partial<ThemeState>) : {};
-  } catch {
-    return {};
-  }
-}
-
-/**
- * Apply the theme to a root element as data-attributes. This is the entire coupling between React
- * and the token layer: @nepal-gov/tokens' CSS selectors ([data-mode], [data-large-text], …) do the
- * rest. Attributes are removed rather than set to a falsy value so the OS-default selectors
- * (:root:not([data-mode])) engage when the user has made no explicit choice.
- */
-export function applyTheme(root: HTMLElement, state: ThemeState): void {
-  if (state.colorMode) root.setAttribute("data-mode", state.colorMode);
-  else root.removeAttribute("data-mode");
-
-  root.toggleAttribute("data-large-text", state.largeText);
-  // Only force reduced-motion ON; when off, leave the OS preference to the @media query, so a
-  // user who set it at the OS level still gets it without toggling it again here.
-  if (state.reducedMotion) root.setAttribute("data-reduced-motion", "true");
-  else root.removeAttribute("data-reduced-motion");
-
-  root.setAttribute("data-density", state.density);
-  root.setAttribute("lang", state.language);
-}
 
 export interface ThemeProviderProps extends Partial<ThemeState> {
   children: ReactNode;
@@ -111,22 +66,20 @@ export function ThemeProvider({
   ...overrides
 }: ThemeProviderProps): ReactNode {
   const [state, setState] = useState<ThemeState>(() => ({
-    ...DEFAULTS,
-    ...(nested ? {} : loadPersisted()),
+    ...THEME_DEFAULTS,
+    ...(nested ? {} : loadPersistedTheme()),
     ...overrides,
   }));
 
   const nestedRef = useRef<HTMLDivElement>(null);
 
-  // An override prop that CHANGES after mount wins — this is what makes a nested mode-preview
-  // panel (the docs site's ThemePanel) reactive: change its `colorMode` prop and the subtree
-  // updates. A prop that stays constant does not clobber a user's own switcher choice, because
-  // the effect only fires when the prop's value actually changes.
+  // An override prop that CHANGES after mount wins — this is what makes a nested mode-preview panel
+  // reactive: change its `colorMode` prop and the subtree updates. A prop that stays constant does
+  // not clobber a user's own switcher choice, because the effect fires only on a real value change.
   const overridesKey = JSON.stringify(overrides);
   useEffect(() => {
     const next = JSON.parse(overridesKey) as Partial<ThemeState>;
     if (Object.keys(next).length > 0) setState((prev) => ({ ...prev, ...next }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- overridesKey is the stable digest.
   }, [overridesKey]);
 
   // Apply to <html> for the root provider, or to the wrapper div for a nested one.
@@ -143,7 +96,7 @@ export function ThemeProvider({
     if (nested) return;
     if (persist && typeof localStorage !== "undefined") {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        localStorage.setItem(THEME_STORAGE_KEY, JSON.stringify(state));
       } catch {
         // A private-mode browser can refuse storage; the choice still holds for the session.
       }
@@ -202,12 +155,3 @@ export function useTheme(): ThemeContextValue {
   }
   return value;
 }
-
-/**
- * The <script> to inline in <head> BEFORE first paint, so the persisted mode is on <html> before
- * any content renders — no flash of the wrong theme. SSR frameworks render this as a raw string;
- * it deliberately duplicates a little of applyTheme() because it must run without React.
- */
-export const themeInitScript = `(function(){try{var s=JSON.parse(localStorage.getItem(${JSON.stringify(
-  STORAGE_KEY,
-)})||"{}");var r=document.documentElement;if(s.colorMode)r.setAttribute("data-mode",s.colorMode);if(s.largeText)r.setAttribute("data-large-text","");if(s.reducedMotion)r.setAttribute("data-reduced-motion","true");r.setAttribute("data-density",s.density||"citizen-website");r.setAttribute("lang",s.language||"ne");}catch(e){}})();`;

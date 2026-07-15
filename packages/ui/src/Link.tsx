@@ -1,3 +1,5 @@
+"use client";
+
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 import { cx } from "./cx.js";
 import { useTheme } from "./ThemeProvider.js";

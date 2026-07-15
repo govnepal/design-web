@@ -1,3 +1,5 @@
+"use client";
+
 import { Header, Container, Stack, Button, Link, TextInput, Alert, Badge, ErrorSummary } from "@nepal-gov/ui";
 
 /**

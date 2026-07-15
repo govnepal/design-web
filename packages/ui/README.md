@@ -32,6 +32,12 @@ export function App() {
 `react` and `react-dom` are peer dependencies (18+). Load the three stylesheets once at the root;
 without them the components render unstyled, because the styling is deliberately not in this package.
 
+**React Server Components:** every interactive component is marked `"use client"`, so the library
+drops into a Next.js App Router (or any RSC framework) without a wrapper. The server-safe theme
+utilities — `themeInitScript` (to inline in `<head>`) and `applyTheme` — live in a non-client module
+(`themeCore`) and are re-exported, so a Server Component can import them without pulling the client
+provider across the boundary.
+
 ## Why behavior-only
 
 - **`@nepal-gov/css`** owns colour, spacing, the type scale, all six display modes, print, density
