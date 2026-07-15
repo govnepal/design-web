@@ -1,0 +1,48 @@
+---
+import Base from "../layouts/Base.astro";
+import { guidelines } from "@nepal-gov/tokens";
+
+// The seven principles come from the guidelines; hardcoding them here would be exactly the
+// hand-authored-content the repo forbids. For the MVP we read the short list from the synced copy
+// at build time via a small helper; see src/lib/guidelines.ts.
+import { principles } from "../lib/guidelines";
+---
+
+<Base
+  title="Civic Calm"
+  description="An unofficial, community-led digital design system for Government of Nepal services."
+>
+  <div class="gov-container">
+    <section class="site-hero">
+      <div class="gov-stack gov-stack--6">
+        <span class="gov-badge gov-badge--info" style="align-self: flex-start;">
+          Draft · design-guidelines {guidelines.version}
+        </span>
+        <h1 class="gov-display">Civic Calm</h1>
+        <p class="site-hero__lead">
+          A calm, official, accessible digital interface style for Government of Nepal services —
+          consistent across websites, mobile apps, officer desktops, and kiosks. This site is built
+          from the design system's own packages, so it is its own first test.
+        </p>
+        <div class="gov-cluster">
+          <a class="gov-button gov-button--primary" href="/components">View components</a>
+          <a class="gov-button gov-button--secondary" href="/foundations">Foundations</a>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="principles-heading" class="gov-stack gov-stack--6">
+      <h2 id="principles-heading">Principles</h2>
+      <div class="site-grid">
+        {
+          principles.map((p) => (
+            <div class="site-card">
+              <h3>{p.title}</h3>
+              <p class="gov-text-secondary">{p.meaning}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</Base>

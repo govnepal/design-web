@@ -1,0 +1,57 @@
+/* Docs-site chrome only — layout for the documentation site itself, not part of Civic Calm.
+ * It still consumes only tokens, so the site obeys the standard it documents (no hardcoded values). */
+
+.site-main {
+  min-block-size: 60vh;
+  padding-block: var(--gov-space-8);
+}
+
+.site-footer {
+  border-block-start: var(--gov-border-width-sm) solid var(--gov-color-border-default);
+  padding-block: var(--gov-space-6);
+  margin-block-start: var(--gov-space-16);
+}
+
+.site-hero {
+  padding-block: var(--gov-space-12);
+}
+
+.site-hero__lead {
+  max-inline-size: 60ch;
+  font-size: var(--gov-type-body-large-font-size);
+  line-height: var(--gov-type-body-large-line-height);
+  color: var(--gov-color-text-secondary);
+}
+
+/* A responsive card grid for the component index and example gallery. */
+.site-grid {
+  display: grid;
+  gap: var(--gov-space-6);
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.site-card {
+  display: block;
+  padding: var(--gov-space-6);
+  background: var(--gov-color-background-surface);
+  border: var(--gov-border-width-sm) solid var(--gov-color-border-default);
+  border-radius: var(--gov-radius-lg);
+  text-decoration: none;
+  color: inherit;
+}
+
+.site-card:hover {
+  border-color: var(--gov-color-border-strong);
+}
+
+.site-card h3 {
+  margin-block-end: var(--gov-space-2);
+}
+
+/* An example surface — a neutral frame around a live component demo. */
+.site-example {
+  padding: var(--gov-space-6);
+  background: var(--gov-color-background-surface);
+  border: var(--gov-border-width-sm) solid var(--gov-color-border-default);
+  border-radius: var(--gov-radius-md);
+}
