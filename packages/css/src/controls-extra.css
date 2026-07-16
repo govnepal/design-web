@@ -1,0 +1,73 @@
+/* Toggle switch, textarea, character count (components/toggle.md, textarea.md, character-count.md). */
+
+/* Toggle — on/off with immediate effect; the ON state is interactive, therefore blue (§5.2), and
+ * the state is shown by more than colour (position + label/word), never colour alone (§4.1). */
+.gov-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gov-space-3);
+  cursor: pointer;
+  min-block-size: var(--gov-target-min-size);
+}
+
+.gov-toggle__track {
+  position: relative;
+  inline-size: 44px;
+  block-size: 24px;
+  flex-shrink: 0;
+  border-radius: var(--gov-radius-full);
+  background: var(--gov-color-control-track);
+  border: var(--gov-border-width-md) solid var(--gov-color-border-input);
+  transition: background-color var(--gov-motion-duration-fast) var(--gov-motion-easing-standard);
+}
+
+.gov-toggle__handle {
+  position: absolute;
+  inset-block-start: 1px;
+  inset-inline-start: 1px;
+  inline-size: 18px;
+  block-size: 18px;
+  border-radius: var(--gov-radius-full);
+  background: var(--gov-color-control-handle);
+  transition: transform var(--gov-motion-duration-fast) var(--gov-motion-easing-standard);
+}
+
+.gov-toggle[aria-checked="true"] .gov-toggle__track {
+  background: var(--gov-color-control-indicator);
+  border-color: var(--gov-color-control-indicator);
+}
+
+.gov-toggle[aria-checked="true"] .gov-toggle__handle {
+  transform: translateX(20px);
+}
+
+/* Textarea — multi-line free text; shares the input border/error treatment. */
+.gov-textarea {
+  inline-size: 100%;
+  min-block-size: calc(var(--gov-type-body-line-height) * 3);
+  padding: var(--gov-space-3);
+  background: var(--gov-color-background-surface);
+  color: var(--gov-color-text-primary);
+  border: var(--gov-border-width-md) solid var(--gov-color-border-input);
+  border-radius: var(--gov-radius-sm);
+  resize: vertical;
+  font-family: var(--gov-font-family-ui);
+  font-size: var(--gov-type-body-font-size);
+  line-height: var(--gov-type-body-line-height);
+}
+
+.gov-textarea[aria-invalid="true"] {
+  border-color: var(--gov-color-status-error-border);
+}
+
+/* Character count — a polite remaining-characters message below a limited field. */
+.gov-character-count {
+  color: var(--gov-color-text-secondary);
+  font-size: var(--gov-type-small-font-size);
+  line-height: var(--gov-type-small-line-height);
+}
+
+.gov-character-count--over {
+  color: var(--gov-color-status-error-text);
+  font-weight: var(--gov-font-weight-medium);
+}

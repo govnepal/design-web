@@ -1,0 +1,37 @@
+/* Cookie banner and offline banner (components/cookie-banner.md, offline-banner.md). */
+
+/* Cookie banner — non-blocking; Reject exactly as prominent as Accept (§9.1.2). */
+.gov-cookie-banner {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: var(--gov-z-sticky);
+  background: var(--gov-color-background-surface);
+  border-block-start: var(--gov-border-width-md) solid var(--gov-color-border-strong);
+  box-shadow: var(--gov-elevation-2);
+  padding: var(--gov-space-4) 0;
+}
+
+.gov-cookie-banner__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gov-space-4);
+  justify-content: space-between;
+}
+
+.gov-cookie-banner__actions {
+  display: flex;
+  gap: var(--gov-space-3);
+}
+
+/* Offline banner — warning treatment, below the header, clears on reconnect. */
+.gov-offline-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gov-space-2);
+  padding: var(--gov-space-3) var(--gov-space-4);
+  background: var(--gov-color-status-warning-background);
+  color: var(--gov-color-status-warning-text);
+  border-block-end: var(--gov-border-width-lg) solid var(--gov-color-status-warning-border);
+}

@@ -1,0 +1,172 @@
+/* Button (components/button.md).
+ *
+ * "One primary button per view establishes the single next step" (§1.3, principle 1). The visual
+ * weight of the three variants is what makes that legible, so it is fixed here and not
+ * configurable per service. */
+
+.gov-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gov-space-2);
+
+  /* The hit area is 44×44 minimum regardless of visual size (components/button.md's Anatomy).
+   * --gov-target-min-size is NOT density-scaled, so the officer desktop's 0.875 multiplier can
+   * compact the padding without ever shrinking a control below the floor
+   * (data/density-rules.yaml: "48dp minimum touch targets survive every multiplier"). */
+  min-block-size: var(--gov-target-min-size);
+  padding-inline: var(--gov-space-4);
+  padding-block: var(--gov-space-3);
+
+  border: var(--gov-border-width-md) solid transparent;
+  border-radius: var(--gov-radius-sm);
+
+  font-family: var(--gov-font-family-ui);
+  font-size: var(--gov-type-body-font-size);
+  font-weight: var(--gov-font-weight-semibold);
+  line-height: var(--gov-type-body-line-height);
+  text-align: center;
+  text-decoration: none;
+
+  /* Citizens are trained by the consumer web; to a low-digital-literacy user the native-app
+   * "default cursor on buttons" reads as NOT clickable (§6.1.4, data/cursors.yaml). */
+  cursor: pointer;
+}
+
+/* Adjacent controls keep the minimum spacing between targets (data/quantified-standards.yaml)
+ * so a mistap on a phone does not trigger the wrong action. */
+.gov-button + .gov-button {
+  margin-inline-start: var(--gov-target-min-spacing);
+}
+
+/* A button may be rendered as a link (<a class="gov-button">) for a primary call-to-action that
+ * navigates — a "start" button. The generic `a` and `a:visited` rules (link.css) would otherwise
+ * win: `a:visited` has higher specificity (0,1,1) than a single button class (0,1,0), so after one
+ * click the label would turn the link-visited colour — invisible on a filled button. Pinning the
+ * label colour on `:link`/`:visited` per variant restores the correct specificity, and the
+ * inherited underline is removed. */
+.gov-button:link,
+.gov-button:visited {
+  text-decoration: none;
+}
+
+/* --- Variants ---------------------------------------------------------------------------- */
+.gov-button--primary,
+.gov-button--primary:link,
+.gov-button--primary:visited {
+  background: var(--gov-color-action-primary-default);
+  color: var(--gov-color-text-on-action);
+}
+
+.gov-button--primary:hover {
+  background: var(--gov-color-action-primary-hover);
+}
+
+.gov-button--primary:active {
+  background: var(--gov-color-action-primary-active);
+}
+
+.gov-button--secondary,
+.gov-button--secondary:link,
+.gov-button--secondary:visited {
+  background: transparent;
+  color: var(--gov-color-action-secondary-text);
+  border-color: currentColor;
+}
+
+.gov-button--secondary:hover {
+  background: var(--gov-color-action-secondary-hover-background);
+}
+
+/* Always paired with a confirmation dialog (components/button.md) — the colour is a warning, not
+ * the safeguard. Its red is deliberately the FUNCTIONAL red, never Simrik: "the colour of the
+ * nation is never the colour of failure" (§2.1). */
+.gov-button--destructive,
+.gov-button--destructive:link,
+.gov-button--destructive:visited {
+  background: var(--gov-color-action-destructive-default);
+  color: var(--gov-color-text-on-action);
+}
+
+.gov-button--destructive:hover {
+  background: var(--gov-color-action-destructive-hover);
+}
+
+.gov-button--destructive:active {
+  background: var(--gov-color-action-destructive-active);
+}
+
+/* --- Sizes -------------------------------------------------------------------------------- */
+/* sm is permitted only in dense officer tables (components/button.md's Platform notes). Even at
+ * sm the 44px hit-area floor holds — the padding shrinks, the target does not. */
+.gov-button--sm {
+  padding-inline: var(--gov-space-3);
+  font-size: var(--gov-type-small-font-size);
+}
+
+.gov-button--lg {
+  padding-inline: var(--gov-space-6);
+  padding-block: var(--gov-space-4);
+  font-size: var(--gov-type-body-large-font-size);
+}
+
+/* Kiosk: lg is the default and targets rise to the recommended 48px for stand-up use (§8.1.4). */
+[data-density="kiosk-counter"] .gov-button {
+  min-block-size: var(--gov-target-recommended-size);
+  font-size: var(--gov-type-body-large-font-size);
+}
+
+/* --- States ------------------------------------------------------------------------------- */
+/* aria-disabled is preferred over the `disabled` attribute (components/button.md): a disabled
+ * control that drops out of the tab order with no explanation is "a support-call generator", so
+ * it stays focusable and something else on the page says why. */
+.gov-button[disabled],
+.gov-button[aria-disabled="true"] {
+  background: var(--gov-color-action-primary-disabled-background);
+  color: var(--gov-color-action-primary-disabled-text);
+  border-color: transparent;
+  cursor: not-allowed;
+}
+
+/* Loading keeps the label ("Submitting…") and the button in the tab order; repeat activation is
+ * ignored in the behavior layer, not by removing the control. */
+.gov-button[aria-busy="true"] {
+  cursor: progress;
+}
+
+.gov-button__spinner {
+  inline-size: var(--gov-icon-size-md);
+  block-size: var(--gov-icon-size-md);
+  border: var(--gov-border-width-md) solid currentColor;
+  border-block-start-color: transparent;
+  border-radius: var(--gov-radius-full);
+  /* The one sanctioned continuous loop is a genuine indeterminate-progress indicator (§5.5).
+   * Under reduced-motion the duration token is 0ms, so this stops dead rather than spinning. */
+  animation: gov-spin var(--gov-motion-duration-slow) linear infinite;
+}
+
+@keyframes gov-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Reduced motion collapses every duration to 0ms, which would leave the spinner frozen mid-turn.
+ * Remove the animation outright instead: the user still learns the button is busy from
+ * aria-busy and the "Submitting…" label — no information is carried by the motion (§5.5). */
+@media (prefers-reduced-motion: reduce) {
+  .gov-button__spinner {
+    animation: none;
+  }
+}
+
+[data-reduced-motion="true"] .gov-button__spinner {
+  animation: none;
+}
+
+/* Icons accompany labels; they never replace them for primary actions (§5.4). */
+.gov-button__icon {
+  inline-size: var(--gov-icon-size-md);
+  block-size: var(--gov-icon-size-md);
+  flex-shrink: 0;
+}

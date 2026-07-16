@@ -1,0 +1,115 @@
+/* Breadcrumb, tabs, pagination, footer (components/breadcrumb.md, tabs.md, pagination.md, footer.md). */
+
+/* Breadcrumb — hierarchy links, current page as plain text. */
+.gov-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gov-space-2);
+  list-style: none;
+  padding: 0;
+  color: var(--gov-color-text-secondary);
+  font-size: var(--gov-type-small-font-size);
+}
+
+.gov-breadcrumb__sep {
+  color: var(--gov-color-text-secondary);
+}
+
+.gov-breadcrumb [aria-current="page"] {
+  color: var(--gov-color-text-primary);
+  font-weight: var(--gov-font-weight-medium);
+}
+
+/* Tabs — the selected tab marked by weight + underline, never colour alone. */
+.gov-tabs__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gov-space-2);
+  border-block-end: var(--gov-border-width-sm) solid var(--gov-color-border-default);
+}
+
+.gov-tabs__tab {
+  min-block-size: var(--gov-target-min-size);
+  padding: var(--gov-space-3) var(--gov-space-4);
+  border: 0;
+  background: transparent;
+  color: var(--gov-color-text-secondary);
+  cursor: pointer;
+  border-block-end: var(--gov-border-width-md) solid transparent;
+  margin-block-end: calc(-1 * var(--gov-border-width-sm));
+}
+
+.gov-tabs__tab[aria-selected="true"] {
+  color: var(--gov-color-text-primary);
+  font-weight: var(--gov-font-weight-semibold);
+  border-block-end-color: var(--gov-color-interactive-selected-indicator);
+}
+
+.gov-tabs__panel {
+  padding-block-start: var(--gov-space-4);
+}
+
+/* Pagination — numbered links, current marked by more than colour. */
+.gov-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gov-space-2);
+  list-style: none;
+  padding: 0;
+}
+
+.gov-pagination__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: var(--gov-target-min-size);
+  min-block-size: var(--gov-target-min-size);
+  padding-inline: var(--gov-space-2);
+  border-radius: var(--gov-radius-sm);
+  text-decoration: none;
+  color: var(--gov-color-link-default);
+}
+
+.gov-pagination__link[aria-current="page"] {
+  background: var(--gov-color-interactive-selected-background);
+  color: var(--gov-color-text-primary);
+  font-weight: var(--gov-font-weight-semibold);
+}
+
+.gov-pagination__link[aria-disabled="true"] {
+  color: var(--gov-color-text-disabled);
+  pointer-events: none;
+}
+
+/* Footer — a two-column trust band, single column on mobile. */
+.gov-footer {
+  background: var(--gov-color-background-secondary);
+  border-block-start: var(--gov-border-width-sm) solid var(--gov-color-border-default);
+  padding-block: var(--gov-space-8);
+}
+
+.gov-footer__grid {
+  display: grid;
+  gap: var(--gov-space-8);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .gov-footer__grid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.gov-footer__links {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gov-space-2);
+}
+
+.gov-footer__office-en {
+  color: var(--gov-color-text-secondary);
+}

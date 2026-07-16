@@ -1,0 +1,75 @@
+/* Modal, confirmation dialog, and toast (components/modal.md, confirmation-dialog.md, toast.md).
+ * Overlays sit above content; surfaces stay fully opaque even over the scrim (§5.2). */
+
+.gov-modal__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--gov-z-overlay);
+  background: var(--gov-color-overlay-scrim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--gov-space-4);
+}
+
+.gov-modal {
+  position: relative;
+  z-index: var(--gov-z-modal);
+  inline-size: 100%;
+  max-inline-size: 32rem;
+  max-block-size: calc(100vh - var(--gov-space-8));
+  overflow: auto;
+  background: var(--gov-color-background-surface);
+  border-radius: var(--gov-radius-lg);
+  padding: var(--gov-space-6);
+  box-shadow: var(--gov-elevation-3);
+}
+
+.gov-modal__title {
+  font-size: var(--gov-type-h3-font-size);
+  line-height: var(--gov-type-h3-line-height);
+  font-weight: var(--gov-font-weight-semibold);
+  margin-block-end: var(--gov-space-3);
+}
+
+.gov-modal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gov-space-3);
+  margin-block-start: var(--gov-space-6);
+}
+
+/* Toast — a small floating confirmation that auto-dismisses. Success/info only, never errors. */
+.gov-toast-region {
+  position: fixed;
+  inset-block-end: var(--gov-space-6);
+  inset-inline: 0;
+  z-index: var(--gov-z-toast);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gov-space-2);
+  pointer-events: none;
+}
+
+.gov-toast {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gov-space-2);
+  padding: var(--gov-space-3) var(--gov-space-4);
+  border-radius: var(--gov-radius-md);
+  box-shadow: var(--gov-elevation-2);
+  pointer-events: auto;
+}
+
+.gov-toast--success {
+  background: var(--gov-color-status-success-background);
+  color: var(--gov-color-status-success-text);
+  border: var(--gov-border-width-sm) solid var(--gov-color-status-success-border);
+}
+
+.gov-toast--info {
+  background: var(--gov-color-status-info-background);
+  color: var(--gov-color-status-info-text);
+  border: var(--gov-border-width-sm) solid var(--gov-color-status-info-border);
+}

@@ -1,0 +1,61 @@
+/* Status badge (components/badge.md).
+ *
+ * Renders the official status taxonomy (data/status-taxonomy.yaml) — Draft, Submitted, Under
+ * review, Correction required, Approved, Rejected, Printed, Delivered — and nothing else. An
+ * ad-hoc status is not a styling problem; extend the taxonomy first (§7.3). */
+
+.gov-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gov-space-1);
+  padding-inline: var(--gov-space-2);
+  padding-block: var(--gov-space-1);
+  border-radius: var(--gov-radius-full);
+  border: var(--gov-border-width-sm) solid;
+
+  font-size: var(--gov-type-small-font-size);
+  line-height: var(--gov-type-small-line-height);
+  font-weight: var(--gov-font-weight-medium);
+  white-space: nowrap;
+}
+
+/* Badges are never clickable — filtering happens in the filter bar (components/badge.md). The
+ * default cursor is therefore correct here, and is the one place it is. */
+
+.gov-badge__icon {
+  inline-size: var(--gov-icon-size-sm);
+  block-size: var(--gov-icon-size-sm);
+  flex-shrink: 0;
+}
+
+/* The badge carries text + icon + colour, never colour alone (§4.1). The label is the taxonomy
+ * label, read aloud as words — no meaning lives in a title attribute. */
+.gov-badge--neutral {
+  background: var(--gov-color-status-neutral-background);
+  border-color: var(--gov-color-status-neutral-border);
+  color: var(--gov-color-status-neutral-text);
+}
+
+.gov-badge--info {
+  background: var(--gov-color-status-info-background);
+  border-color: var(--gov-color-status-info-border);
+  color: var(--gov-color-status-info-text);
+}
+
+.gov-badge--success {
+  background: var(--gov-color-status-success-background);
+  border-color: var(--gov-color-status-success-border);
+  color: var(--gov-color-status-success-text);
+}
+
+.gov-badge--warning {
+  background: var(--gov-color-status-warning-background);
+  border-color: var(--gov-color-status-warning-border);
+  color: var(--gov-color-status-warning-text);
+}
+
+.gov-badge--error {
+  background: var(--gov-color-status-error-background);
+  border-color: var(--gov-color-status-error-border);
+  color: var(--gov-color-status-error-text);
+}

@@ -1,0 +1,71 @@
+/* Print (§5.1.5, normative).
+ *
+ * Print is a first-class target, not an afterthought: officers print constantly (review packets,
+ * the print-receipt-certificate pattern) and citizens print confirmations — "the citizen usually
+ * leaves with paper" (§8.1.7).
+ *
+ * The colour half of this lives in the GENERATED print block above, which re-declares every
+ * semantic colour token at its light-mode value inside `@media print`. That is what makes "dark
+ * mode never prints dark" true: a `[data-mode="dark"]` override on :root would otherwise still
+ * be in force on paper. Print is a rendering target, not a seventh display mode, so it re-states
+ * the light values rather than becoming one — and it re-states them from the tokens, so there is
+ * still no hardcoded hex anywhere in this package.
+ *
+ * What follows is the structural half: what disappears, what must not break across a page, and
+ * what a citizen needs on paper that they did not need on screen. */
+
+@media print {
+  /* Chrome disappears; content, the reference number/QR code, and the government identity mark
+   * remain (§5.1.5). */
+  .gov-header__language,
+  .gov-skip-link,
+  nav,
+  .gov-button,
+  [data-print="hide"] {
+    display: none !important;
+  }
+
+  /* Shadows are an on-screen elevation device and print as grey mud. */
+  * {
+    box-shadow: none !important;
+  }
+
+  /* A citizen reading a printed page cannot click a link, so its URL prints beside it (§5.1.5).
+   * Only external/absolute links — printing "(#main)" next to a skip link helps nobody. */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: var(--gov-type-caption-font-size);
+    word-break: break-all;
+  }
+
+  /* Page breaks never split a table row, a summary-list question/answer pair, or a signature
+   * block across two pages (§5.1.5). */
+  tr,
+  .gov-field,
+  .gov-alert,
+  .gov-error-summary,
+  [data-print="keep-together"] {
+    break-inside: avoid;
+  }
+
+  h1, h2, h3 {
+    break-after: avoid;
+  }
+
+  /* Status must not be carried by colour alone — and on a monochrome printer or a photocopy,
+   * colour is carried by nothing at all. The border and the label text are what survive
+   * (rules/status-not-color-alone.yaml applies to print, not only screen; identity/
+   * document-identity's print-fidelity rule says the same of generated certificates). */
+  .gov-badge,
+  .gov-alert,
+  .gov-error-summary {
+    border: var(--gov-border-width-sm) solid var(--gov-color-text-primary) !important;
+  }
+
+  /* Reference numbers stay legible in monochrome print and after a photocopy — the letterhead's
+   * monochrome-legible rule (identity/official-letterhead). */
+  .gov-reference {
+    font-family: var(--gov-font-family-mono);
+    font-weight: var(--gov-font-weight-semibold);
+  }
+}

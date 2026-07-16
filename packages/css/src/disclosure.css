@@ -1,0 +1,61 @@
+/* Details (components/details.md) and warning text (components/warning-text.md).
+ *
+ * Details is native <details>/<summary> — the platform's own disclosure semantics, so a screen
+ * reader announces collapsed/expanded for free and Enter/Space just work. The label states what is
+ * inside ("Why we ask this"), never a bare "More". */
+
+.gov-details {
+  border-block-start: var(--gov-border-width-sm) solid var(--gov-color-border-default);
+  padding-block: var(--gov-space-2);
+}
+
+.gov-details__summary {
+  display: flex;
+  align-items: center;
+  gap: var(--gov-space-2);
+  min-block-size: var(--gov-target-min-size);
+  cursor: pointer;
+  color: var(--gov-color-link-default);
+  font-weight: var(--gov-font-weight-medium);
+  /* Remove the default triangle; a rotating chevron replaces it. */
+  list-style: none;
+}
+
+.gov-details__summary::-webkit-details-marker {
+  display: none;
+}
+
+.gov-details__chevron {
+  inline-size: var(--gov-icon-size-md);
+  block-size: var(--gov-icon-size-md);
+  flex-shrink: 0;
+  transition: transform var(--gov-motion-duration-base) var(--gov-motion-easing-standard);
+}
+
+.gov-details[open] .gov-details__chevron {
+  transform: rotate(90deg);
+}
+
+.gov-details__content {
+  padding-block-start: var(--gov-space-3);
+  padding-inline-start: var(--gov-space-6);
+  color: var(--gov-color-text-secondary);
+}
+
+/* Warning text — an inline icon + a short sentence, left-aligned with what it warns about. No
+ * card, border, or fill: that treatment belongs to alert. The SENTENCE carries the meaning; the
+ * icon and colour reinforce it (rules/status-not-color-alone). */
+.gov-warning-text {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gov-space-2);
+  color: var(--gov-color-status-warning-text);
+  font-weight: var(--gov-font-weight-medium);
+}
+
+.gov-warning-text__icon {
+  inline-size: var(--gov-icon-size-sm);
+  block-size: var(--gov-icon-size-sm);
+  flex-shrink: 0;
+  margin-block-start: 0.15em;
+}

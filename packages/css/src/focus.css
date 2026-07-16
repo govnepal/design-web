@@ -1,0 +1,36 @@
+/* Focus (§5.2, normative).
+ *
+ * The double ring: `--gov-focus-ring-width` of `color.focus.ring` outside an equally-wide gap of
+ * `color.focus.offset`. It is drawn with box-shadow rather than `outline` + `outline-offset` for
+ * one specific reason: outline-offset leaves the element's OWN background showing in the gap, so
+ * on a primary button the gap would be blue-on-blue and the double ring would collapse into one
+ * thick edge. box-shadow lets the gap be an actual colour, which is what the spec requires when
+ * it says the ring must be "visible on any background including primary buttons and dark
+ * surfaces".
+ *
+ * High-contrast mode widens the ring to 3px; that comes from the token, not from a rule here. */
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 var(--gov-focus-ring-width) var(--gov-color-focus-offset),
+    0 0 0 calc(var(--gov-focus-ring-width) * 2) var(--gov-color-focus-ring);
+  /* The ring is drawn outside the element and must never be clipped by an ancestor's overflow,
+   * nor hidden behind a sticky header (§4.1's focus-visibility test). */
+  position: relative;
+  z-index: var(--gov-z-sticky);
+}
+
+/* Focus is never removed (§5.2). A product stylesheet that sets `outline: none` without a
+ * replacement is a checker error; this backstop means it at least degrades to a visible ring. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* The focus ring must appear instantly — motion.duration.instant (§5.5): "state changes that must
+ * not animate — error appearance, focus ring". */
+:where(a, button, input, select, textarea, summary, [tabindex]) {
+  transition-property: background-color, border-color, color;
+  transition-duration: var(--gov-motion-duration-fast);
+  transition-timing-function: var(--gov-motion-easing-standard);
+}

@@ -1,0 +1,60 @@
+/* Link (components/link.md).
+ *
+ * "If it is blue, it is interactive; if it is interactive, it is blue" (§5.2). Nothing decorative
+ * may be blue, which is why a link needs no other affordance — except the underline, below. */
+
+.gov-link,
+a {
+  color: var(--gov-color-link-default);
+  /* Underlined in body text, because a link may never be identified by colour alone (§4.1).
+   * This is the single most-broken accessibility rule on government sites, so it is the element
+   * default here rather than an opt-in class. */
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+a:hover,
+.gov-link:hover {
+  color: var(--gov-color-link-hover);
+  text-decoration-thickness: 2px;
+}
+
+/* Shown, not suppressed: a citizen working through a list of guidance pages can see what they
+ * have already read (components/link.md, Platform notes). */
+a:visited,
+.gov-link:visited {
+  color: var(--gov-color-link-visited);
+}
+
+/* Standalone links (not inside a paragraph) carry the same 44px minimum hit area as any other
+ * control. Inline links in running text are exempt — they are part of a text line. */
+.gov-link--standalone {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--gov-target-min-size);
+}
+
+/* The "Back" affordance above a task-flow page's heading (components/link.md). */
+.gov-link--back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gov-space-2);
+  min-block-size: var(--gov-target-min-size);
+}
+
+/* An external link is marked visibly, because §9.2's trust cues depend on a citizen knowing when
+ * they have left .gov.np — an unmarked jump off the domain is exactly what phishing exploits.
+ * The visible mark pairs with an accessible name in the behavior layer; neither alone is enough. */
+.gov-link--external::after {
+  content: "↗";
+  margin-inline-start: 0.25em;
+  /* Decorative glyph: the accessible name already says the link is external. */
+  speak: never;
+}
+
+/* A download link states format and size in its text so a citizen on metered mobile data can
+ * decide before spending it (§8.1.5). The stylesheet cannot enforce that; it only marks it. */
+.gov-link--download::after {
+  content: "↓";
+  margin-inline-start: 0.25em;
+}

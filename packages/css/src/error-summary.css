@@ -1,0 +1,56 @@
+/* Error summary (components/error-summary.md).
+ *
+ * Mandatory on every form, on any failed validation (§7.1) — alongside the inline errors, never
+ * instead of them. Both renderings are built from the same validation result, so they can never
+ * disagree about what went wrong. */
+
+.gov-error-summary {
+  padding: var(--gov-space-4);
+  /* The thick edge (border.width.lg) is the same device the alert uses: the state is carried by
+   * shape as well as colour, so it survives high-contrast mode, where the tint is removed
+   * entirely and only border + icon + text remain (§5.2's "shape over tint"). */
+  border: var(--gov-border-width-lg) solid var(--gov-color-status-error-border);
+  border-radius: var(--gov-radius-md);
+  background: var(--gov-color-status-error-background);
+  color: var(--gov-color-text-primary);
+}
+
+/* Focus moves here on failed submit (tabindex="-1", role="alert"), so it must show a focus ring
+ * even though it is not otherwise interactive. */
+.gov-error-summary:focus-visible {
+  box-shadow:
+    0 0 0 var(--gov-focus-ring-width) var(--gov-color-focus-offset),
+    0 0 0 calc(var(--gov-focus-ring-width) * 2) var(--gov-color-focus-ring);
+}
+
+.gov-error-summary__title {
+  font-size: var(--gov-type-h3-font-size);
+  line-height: var(--gov-type-h3-line-height);
+  font-weight: var(--gov-font-weight-semibold);
+  color: var(--gov-color-status-error-text);
+  margin-block-end: var(--gov-space-3);
+}
+
+.gov-error-summary__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gov-space-2);
+}
+
+/* Each entry is a real link to the field's id. Activating it moves FOCUS to the input, not just
+ * the scroll position — a keyboard user who lands next to the field but not in it has to hunt
+ * for it (components/error-summary.md). */
+.gov-error-summary__link {
+  color: var(--gov-color-status-error-text);
+  font-weight: var(--gov-font-weight-medium);
+  text-decoration: underline;
+  min-block-size: var(--gov-target-min-size);
+  display: inline-flex;
+  align-items: center;
+}
+
+.gov-error-summary__link:hover,
+.gov-error-summary__link:visited {
+  color: var(--gov-color-status-error-text);
+}

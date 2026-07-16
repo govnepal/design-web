@@ -1,0 +1,40 @@
+/* Reset — the minimum needed to make the token layer predictable. Not a normalize.css: every
+ * rule here exists because a browser default would otherwise contradict a guideline. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Browser default margins are the main reason teams reach for hardcoded spacing. Remove them so
+ * vertical rhythm comes from `stack` and nowhere else (components/stack.md). */
+body,
+h1, h2, h3, h4, h5, h6,
+p, figure, blockquote,
+dl, dd, ol, ul {
+  margin: 0;
+}
+
+ol, ul {
+  padding: 0;
+}
+
+/* Media never overflows its container — §4.1 requires zoom and responsive layout without
+ * clipping or overlap. */
+img, picture, video, canvas, svg {
+  display: block;
+  max-inline-size: 100%;
+}
+
+/* Form controls do not inherit typography by default; §5.3's 16px minimum applies to them too. */
+input, button, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+
+/* A long citizenship number or Devanagari compound must wrap rather than force a horizontal
+ * scrollbar on a 360px phone. */
+p, h1, h2, h3, h4, h5, h6, li, td, th {
+  overflow-wrap: break-word;
+}

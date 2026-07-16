@@ -1,0 +1,107 @@
+/* Officer + citizen navigation and government display components (batch C). */
+
+/* Bottom navigation — mobile primary nav, fixed, labels always shown. */
+.gov-bottom-nav {
+  display: flex;
+  border-block-start: var(--gov-border-width-sm) solid var(--gov-color-border-default);
+  background: var(--gov-color-background-surface);
+}
+
+.gov-bottom-nav__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gov-space-1);
+  min-block-size: var(--gov-target-recommended-size);
+  padding: var(--gov-space-2);
+  text-decoration: none;
+  color: var(--gov-color-text-secondary);
+  font-size: var(--gov-type-caption-font-size);
+}
+
+.gov-bottom-nav__item[aria-current="page"] {
+  color: var(--gov-color-interactive-selected-indicator);
+  font-weight: var(--gov-font-weight-semibold);
+}
+
+/* Sidebar — officer left rail. */
+.gov-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gov-space-1);
+  padding: var(--gov-space-3);
+  background: var(--gov-color-background-secondary);
+  border-inline-end: var(--gov-border-width-sm) solid var(--gov-color-border-default);
+}
+
+.gov-sidebar__link {
+  display: block;
+  padding: var(--gov-space-2) var(--gov-space-3);
+  border-radius: var(--gov-radius-sm);
+  text-decoration: none;
+  color: var(--gov-color-text-primary);
+  min-block-size: var(--gov-target-min-size);
+}
+
+.gov-sidebar__link[aria-current="page"] {
+  background: var(--gov-color-interactive-selected-background);
+  font-weight: var(--gov-font-weight-semibold);
+}
+
+/* Status tracker — vertical list of taxonomy statuses. */
+.gov-status-tracker {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gov-space-4);
+}
+
+.gov-status-tracker__step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gov-space-3);
+  color: var(--gov-color-text-secondary);
+}
+
+.gov-status-tracker__step--complete { color: var(--gov-color-status-success-text); }
+.gov-status-tracker__step--current {
+  color: var(--gov-color-text-primary);
+  font-weight: var(--gov-font-weight-semibold);
+}
+
+.gov-status-tracker__marker {
+  inline-size: 24px;
+  block-size: 24px;
+  flex-shrink: 0;
+  border-radius: var(--gov-radius-full);
+  border: var(--gov-border-width-md) solid currentColor;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--gov-type-small-font-size);
+}
+
+/* Audit log item — an immutable record row. */
+.gov-audit-item {
+  padding-block: var(--gov-space-3);
+  border-block-end: var(--gov-border-width-sm) solid var(--gov-color-border-default);
+}
+
+.gov-audit-item__meta {
+  color: var(--gov-color-text-secondary);
+  font-size: var(--gov-type-small-font-size);
+}
+
+.gov-audit-item__ref { font-family: var(--gov-font-family-mono); }
+
+/* Feedback widget — "was this page useful?" plus a report link. */
+.gov-feedback {
+  border-block-start: var(--gov-border-width-sm) solid var(--gov-color-border-default);
+  padding-block: var(--gov-space-4);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gov-space-3);
+}

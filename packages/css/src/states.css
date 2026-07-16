@@ -1,0 +1,54 @@
+/* Empty state and loading state (components/empty-state.md, loading-state.md). */
+.gov-empty-state {
+  text-align: center;
+  padding-block: var(--gov-space-8);
+  color: var(--gov-color-text-secondary);
+}
+
+.gov-empty-state__title {
+  font-size: var(--gov-type-h3-font-size);
+  line-height: var(--gov-type-h3-line-height);
+  font-weight: var(--gov-font-weight-semibold);
+  color: var(--gov-color-text-primary);
+  margin-block-end: var(--gov-space-2);
+}
+
+.gov-empty-state__action {
+  margin-block-start: var(--gov-space-4);
+}
+
+/* Spinner — the one sanctioned continuous loop (§5.5); stops under reduced-motion. */
+.gov-spinner {
+  display: inline-block;
+  inline-size: var(--gov-icon-size-lg, 24px);
+  block-size: var(--gov-icon-size-lg, 24px);
+  border: var(--gov-border-width-md) solid var(--gov-color-border-default);
+  border-block-start-color: var(--gov-color-control-indicator);
+  border-radius: var(--gov-radius-full);
+  animation: gov-spin var(--gov-motion-duration-slow) linear infinite;
+}
+
+@keyframes gov-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gov-spinner { animation: none; }
+}
+[data-reduced-motion="true"] .gov-spinner { animation: none; }
+
+/* Skeleton — pulses no faster than slow (a fast pulse reads as error, §5.5). */
+.gov-skeleton {
+  background: var(--gov-color-background-secondary);
+  border-radius: var(--gov-radius-md);
+  animation: gov-pulse var(--gov-motion-duration-slow) ease-in-out infinite alternate;
+}
+
+@keyframes gov-pulse {
+  to { opacity: 0.5; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gov-skeleton { animation: none; }
+}
+[data-reduced-motion="true"] .gov-skeleton { animation: none; }

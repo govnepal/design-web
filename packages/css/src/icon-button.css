@@ -1,0 +1,39 @@
+/* Icon button (components/icon-button.md) — an icon-only action with a required accessible name.
+ * 44x44 minimum hit area even though the icon is smaller; never a primary action (§5.4). */
+.gov-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: var(--gov-target-min-size);
+  min-block-size: var(--gov-target-min-size);
+  padding: var(--gov-space-2);
+  border: 0;
+  border-radius: var(--gov-radius-sm);
+  background: transparent;
+  color: var(--gov-color-text-primary);
+  cursor: pointer;
+}
+
+.gov-icon-button:hover {
+  background: var(--gov-color-interactive-hover-surface);
+}
+
+.gov-icon-button:active {
+  background: var(--gov-color-interactive-pressed-surface);
+}
+
+.gov-icon-button[disabled],
+.gov-icon-button[aria-disabled="true"] {
+  color: var(--gov-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.gov-icon-button__icon {
+  inline-size: var(--gov-icon-size-md);
+  block-size: var(--gov-icon-size-md);
+}
+
+[data-density="kiosk-counter"] .gov-icon-button {
+  min-inline-size: var(--gov-target-recommended-size);
+  min-block-size: var(--gov-target-recommended-size);
+}

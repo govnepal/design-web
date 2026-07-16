@@ -1,0 +1,19 @@
+{
+  "$comment": "The upstream repos this monorepo builds from. Tag-pinning between our own repos is deferred while consumers are internal-only (docs/repo-structure.md, 'Current phase'), so `ref` tracks a branch for now. Pin each to a tag the moment an external consumer appears — the ecosystem rule is: consume by tag, never by main.",
+  "sources": [
+    {
+      "name": "guidelines",
+      "repo": "../design-guidelines",
+      "ref": "main",
+      "dest": ".guidelines",
+      "provides": "Policy source of truth: tokens, rules, data, component specs."
+    },
+    {
+      "name": "assets",
+      "repo": "../design-assets",
+      "ref": "main",
+      "dest": ".assets",
+      "provides": "Self-hosted Noto fonts (woff2 + @font-face CSS); emblem masters, once they exist."
+    }
+  ]
+}

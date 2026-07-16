@@ -2,7 +2,7 @@
 
 Makes AI coding tools (Claude, Codex, Cursor, …) generate guideline-compliant code by default.
 
-- `mcp/` — MCP server (`npx @nepal-gov/design-mcp` + hosted remote): get_token,
+- `mcp/` — MCP server (`npx @govnepal/design-mcp` + hosted remote): get_token,
   get_component, get_pattern, get_icon, search_guidelines (ne/en), validate_snippet,
   check_page — wraps the design-tools rules-engine
 - `skill/` — Claude Skill "nepal-gov-design": SKILL.md index + on-demand reference files,

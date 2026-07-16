@@ -1,0 +1,26 @@
+/* Card (components/card.md) — group everything about one subject into one bounded, opaque surface.
+ * Low shadow, per Civic Calm's restraint (§2.1); surfaces are always fully opaque (§5.2). */
+.gov-card {
+  background: var(--gov-color-background-surface);
+  border: var(--gov-border-width-sm) solid var(--gov-color-border-default);
+  border-radius: var(--gov-radius-lg);
+  padding: var(--gov-space-6);
+  box-shadow: var(--gov-elevation-1);
+}
+
+.gov-card > * + * {
+  margin-block-start: var(--gov-space-3);
+}
+
+/* The interactive variant makes the WHOLE card one link/target — never nest independent links
+ * inside it (a nested-interactive failure). */
+.gov-card--interactive {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.gov-card--interactive:hover {
+  border-color: var(--gov-color-border-strong);
+}

@@ -1,0 +1,40 @@
+/* Accordion (components/accordion.md) — several independent expandable sections. */
+.gov-accordion {
+  border-block-start: var(--gov-border-width-sm) solid var(--gov-color-border-default);
+}
+
+.gov-accordion__section {
+  border-block-end: var(--gov-border-width-sm) solid var(--gov-color-border-default);
+}
+
+.gov-accordion__header {
+  inline-size: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--gov-space-2);
+  justify-content: space-between;
+  min-block-size: var(--gov-target-min-size);
+  padding: var(--gov-space-3) 0;
+  background: transparent;
+  border: 0;
+  text-align: start;
+  font-weight: var(--gov-font-weight-medium);
+  color: var(--gov-color-text-primary);
+  cursor: pointer;
+}
+
+.gov-accordion__chevron {
+  inline-size: var(--gov-icon-size-md);
+  block-size: var(--gov-icon-size-md);
+  flex-shrink: 0;
+  transition: transform var(--gov-motion-duration-base) var(--gov-motion-easing-standard);
+}
+
+.gov-accordion__header[aria-expanded="true"] .gov-accordion__chevron {
+  transform: rotate(180deg);
+}
+
+.gov-accordion__panel {
+  padding-block-end: var(--gov-space-4);
+  color: var(--gov-color-text-secondary);
+}
