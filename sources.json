@@ -4,14 +4,14 @@
     {
       "name": "guidelines",
       "repo": "../design-guidelines",
-      "ref": "fix-contrast-failures",
+      "ref": "main",
       "dest": ".guidelines",
       "provides": "Policy source of truth: tokens, rules, data, component specs."
     },
     {
       "name": "assets",
       "repo": "../design-assets",
-      "ref": "add-emblem-flag",
+      "ref": "main",
       "dest": ".assets",
       "provides": "Self-hosted Noto fonts (woff2 + @font-face CSS); emblem masters, once they exist."
     }
